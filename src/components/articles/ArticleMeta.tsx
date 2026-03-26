@@ -8,14 +8,13 @@ interface ArticleMetaProps {
   readingTime: number;
 }
 
-// Bandeau d'informations : avatar, nom, date et temps de lecture.
 export function ArticleMeta({
   author,
   publishedAt,
   readingTime,
 }: ArticleMetaProps) {
   return (
-    <div className="flex items-center gap-3 text-sm text-text-secondary">
+    <div className="flex items-center gap-3 text-sm text-text-secondary dark:text-gray-400">
       <Image
         src={author.avatar}
         alt={author.name}

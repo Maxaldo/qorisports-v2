@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { categories } from "@/data/mock-articles";
 import {
   getArticles,
@@ -10,6 +11,12 @@ import { LatestNews } from "@/components/home/LatestNews";
 import { Sidebar } from "@/components/home/Sidebar";
 import { TrendingBar } from "@/components/home/TrendingBar";
 
+export const metadata: Metadata = {
+  title: "Accueil",
+  description:
+    "Qorisports : toute l'actualite sportive beninoise et africaine en direct.",
+};
+
 export default function Home() {
   const featured = getFeaturedArticles();
   const latest = getArticles();
@@ -21,7 +28,7 @@ export default function Home() {
   const basketballArticles = getArticlesByCategory("basketball");
 
   return (
-    <div className="bg-surface">
+    <div className="bg-surface dark:bg-gray-950">
       <HeroSlider articles={featured} />
       <TrendingBar articles={trending} />
 

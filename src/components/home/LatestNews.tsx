@@ -11,7 +11,6 @@ interface LatestNewsProps {
   articles: Article[];
 }
 
-// Article principal en grand format.
 function MainArticle({ article }: { article: Article }) {
   return (
     <article>
@@ -33,16 +32,16 @@ function MainArticle({ article }: { article: Article }) {
       </Link>
 
       <Link href={`/article/${article.slug}`}>
-        <h3 className="mt-4 text-xl font-display font-bold leading-tight text-text-primary transition-colors hover:text-accent md:text-2xl">
+        <h3 className="mt-4 text-xl font-display font-bold leading-tight text-text-primary transition-colors hover:text-accent md:text-2xl dark:text-gray-100">
           {article.title}
         </h3>
       </Link>
 
-      <p className="mt-2 text-sm text-text-secondary line-clamp-2">
+      <p className="mt-2 text-sm text-text-secondary line-clamp-2 dark:text-gray-400">
         {article.excerpt}
       </p>
 
-      <div className="mt-3 flex items-center gap-3 text-xs text-text-secondary">
+      <div className="mt-3 flex items-center gap-3 text-xs text-text-secondary dark:text-gray-400">
         <span className="font-medium">{article.author.name}</span>
         <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
         <span>{formatDate(article.publishedAt)}</span>
@@ -51,7 +50,6 @@ function MainArticle({ article }: { article: Article }) {
   );
 }
 
-// Article compact avec image carree.
 function CompactArticle({ article }: { article: Article }) {
   return (
     <article className="flex gap-4">
@@ -76,11 +74,11 @@ function CompactArticle({ article }: { article: Article }) {
           {article.category.name}
         </span>
         <Link href={`/article/${article.slug}`}>
-          <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent">
+          <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent dark:text-gray-100">
             {article.title}
           </h4>
         </Link>
-        <span className="mt-1 text-xs text-text-secondary">
+        <span className="mt-1 text-xs text-text-secondary dark:text-gray-400">
           {formatDate(article.publishedAt)}
         </span>
       </div>
@@ -106,7 +104,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
     >
       <div className="mb-6 flex items-center gap-3">
         <span className="h-7 w-1 rounded-full bg-accent" />
-        <h2 className="text-xl font-display font-bold text-text-primary md:text-2xl">
+        <h2 className="text-xl font-display font-bold text-text-primary md:text-2xl dark:text-gray-100">
           Dernieres Actualites
         </h2>
       </div>

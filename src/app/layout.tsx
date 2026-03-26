@@ -16,9 +16,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Qorisports — La référence de l'actualité sportive",
+  title: {
+    default: "Qorisports — La reference de l'actualite sportive",
+    template: "%s | Qorisports",
+  },
   description:
-    "Toute l'actualité sportive béninoise et africaine : football, basketball, handball, athlétisme et plus encore.",
+    "Toute l'actualite sportive beninoise et africaine : football, basketball, handball, athletisme et plus encore.",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: "Qorisports",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
@@ -27,8 +38,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${plusJakartaSans.variable} ${inter.variable}`}>
-      <body className="min-h-screen font-body bg-surface text-text-primary antialiased">
+    <html
+      lang="fr"
+      className={`${plusJakartaSans.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen font-body bg-surface text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
         <TopBar />
         <Navbar />
         <main className="min-h-screen">{children}</main>

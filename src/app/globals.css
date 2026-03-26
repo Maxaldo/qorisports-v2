@@ -30,9 +30,14 @@
   }
 }
 
-/* Force le mode clair pour eviter un fond noir en dark mode systeme */
+/* Gestion du color-scheme selon le theme actif */
 @layer base {
   html {
     color-scheme: light;
   }
+  html.dark {
+    color-scheme: dark;
+  }
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

@@ -27,8 +27,13 @@ export async function generateMetadata({
   const article = getArticleBySlug(slug);
   if (!article) return { title: "Article non trouve" };
   return {
-    title: `${article.title} — Qorisports`,
+    title: article.title,
     description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: [{ url: article.coverImage }],
+    },
   };
 }
 
@@ -37,17 +42,15 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  // Articles similaires : meme categorie, en excluant l'article courant.
   const related = getArticlesByCategory(article.category.slug)
     .filter((a) => a.id !== article.id)
     .slice(0, 3);
 
   return (
-    <div className="bg-surface pb-16">
-      {/* Contenu principal */}
+    <div className="bg-surface pb-16 dark:bg-gray-950">
       <div className="mx-auto max-w-4xl px-4 pt-8">
         {/* Breadcrumb */}
-        <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-text-secondary">
+        <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-text-secondary dark:text-gray-400">
           <Link href="/" className="transition-colors hover:text-accent">
             Accueil
           </Link>
@@ -59,18 +62,17 @@ export default async function ArticlePage({ params }: PageProps) {
             {article.category.name}
           </Link>
           <span>/</span>
-          <span className="text-text-primary line-clamp-1">{article.title}</span>
+          <span className="text-text-primary line-clamp-1 dark:text-gray-100">
+            {article.title}
+          </span>
         </nav>
 
-        {/* Badge categorie */}
         <Badge label={article.category.name} color={article.category.color} />
 
-        {/* Titre */}
-        <h1 className="mt-4 text-3xl font-display font-bold leading-tight text-text-primary md:text-4xl">
+        <h1 className="mt-4 text-3xl font-display font-bold leading-tight text-text-primary md:text-4xl dark:text-gray-100">
           {article.title}
         </h1>
 
-        {/* Meta : auteur, date, temps de lecture */}
         <div className="mt-5">
           <ArticleMeta
             author={article.author}
@@ -79,7 +81,6 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        {/* Image de couverture */}
         <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-xl">
           <Image
             src={article.coverImage}
@@ -90,13 +91,11 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        {/* Corps de l'article */}
         <div
-          className="prose prose-lg mt-10 max-w-none prose-p:text-text-secondary prose-p:leading-relaxed"
+          className="prose prose-lg mt-10 max-w-none prose-p:text-text-secondary prose-p:leading-relaxed dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
-        {/* Boutons de partage */}
         <div className="mt-10">
           <ShareButtons
             url={`/article/${article.slug}`}
@@ -104,14 +103,12 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        {/* Separateur */}
-        <hr className="mt-10 border-gray-200" />
+        <hr className="mt-10 border-gray-200 dark:border-gray-800" />
       </div>
 
-      {/* Articles similaires (largeur plus grande) */}
       {related.length > 0 && (
         <div className="mx-auto max-w-7xl px-4 pt-10">
-          <h2 className="mb-6 text-xl font-display font-bold text-text-primary md:text-2xl">
+          <h2 className="mb-6 text-xl font-display font-bold text-text-primary md:text-2xl dark:text-gray-100">
             Articles similaires
           </h2>
 

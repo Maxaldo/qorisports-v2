@@ -9,14 +9,9 @@ interface ArticleCardProps {
   variant?: "large" | "compact" | "horizontal";
 }
 
-// Carte article reutilisable avec 3 variantes d'affichage.
 export function ArticleCard({ article, variant = "large" }: ArticleCardProps) {
-  if (variant === "compact") {
-    return <CompactCard article={article} />;
-  }
-  if (variant === "horizontal") {
-    return <HorizontalCard article={article} />;
-  }
+  if (variant === "compact") return <CompactCard article={article} />;
+  if (variant === "horizontal") return <HorizontalCard article={article} />;
   return <LargeCard article={article} />;
 }
 
@@ -24,7 +19,7 @@ function LargeCard({ article }: { article: Article }) {
   return (
     <Link
       href={`/article/${article.slug}`}
-      className="group block overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg"
+      className="group block overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg dark:bg-gray-900 dark:hover:shadow-gray-900"
     >
       <div className="relative aspect-video w-full overflow-hidden">
         <Image
@@ -39,13 +34,13 @@ function LargeCard({ article }: { article: Article }) {
       </div>
 
       <div className="p-4">
-        <h3 className="text-lg font-display font-bold leading-tight text-text-primary transition-colors group-hover:text-accent">
+        <h3 className="text-lg font-display font-bold leading-tight text-text-primary transition-colors group-hover:text-accent dark:text-gray-100">
           {article.title}
         </h3>
-        <p className="mt-2 text-sm text-text-secondary line-clamp-2">
+        <p className="mt-2 text-sm text-text-secondary line-clamp-2 dark:text-gray-400">
           {article.excerpt}
         </p>
-        <div className="mt-3 flex items-center gap-2 text-xs text-text-secondary">
+        <div className="mt-3 flex items-center gap-2 text-xs text-text-secondary dark:text-gray-400">
           <span className="font-medium">{article.author.name}</span>
           <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
           <span>{formatDate(article.publishedAt)}</span>
@@ -57,10 +52,7 @@ function LargeCard({ article }: { article: Article }) {
 
 function CompactCard({ article }: { article: Article }) {
   return (
-    <Link
-      href={`/article/${article.slug}`}
-      className="group flex gap-4"
-    >
+    <Link href={`/article/${article.slug}`} className="group flex gap-4">
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
         <Image
           src={article.coverImage}
@@ -72,10 +64,10 @@ function CompactCard({ article }: { article: Article }) {
       </div>
 
       <div className="flex flex-col justify-center">
-        <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors group-hover:text-accent">
+        <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors group-hover:text-accent dark:text-gray-100">
           {article.title}
         </h4>
-        <span className="mt-1 text-xs text-text-secondary">
+        <span className="mt-1 text-xs text-text-secondary dark:text-gray-400">
           {formatDate(article.publishedAt)}
         </span>
       </div>
@@ -87,7 +79,7 @@ function HorizontalCard({ article }: { article: Article }) {
   return (
     <Link
       href={`/article/${article.slug}`}
-      className="group flex overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg"
+      className="group flex overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg dark:bg-gray-900 dark:hover:shadow-gray-900"
     >
       <div className="relative w-1/3 shrink-0 overflow-hidden">
         <Image
@@ -100,13 +92,13 @@ function HorizontalCard({ article }: { article: Article }) {
 
       <div className="flex w-2/3 flex-col justify-center p-4">
         <Badge label={article.category.name} color={article.category.color} />
-        <h3 className="mt-2 text-base font-display font-bold leading-tight text-text-primary transition-colors group-hover:text-accent md:text-lg">
+        <h3 className="mt-2 text-base font-display font-bold leading-tight text-text-primary transition-colors group-hover:text-accent md:text-lg dark:text-gray-100">
           {article.title}
         </h3>
-        <p className="mt-1.5 text-sm text-text-secondary line-clamp-2">
+        <p className="mt-1.5 text-sm text-text-secondary line-clamp-2 dark:text-gray-400">
           {article.excerpt}
         </p>
-        <div className="mt-2 flex items-center gap-2 text-xs text-text-secondary">
+        <div className="mt-2 flex items-center gap-2 text-xs text-text-secondary dark:text-gray-400">
           <span className="font-medium">{article.author.name}</span>
           <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
           <span>{formatDate(article.publishedAt)}</span>

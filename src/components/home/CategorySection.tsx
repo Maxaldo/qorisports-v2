@@ -33,7 +33,7 @@ export function CategorySection({
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5 }}
-      className="border-b border-gray-200 pb-10"
+      className="border-b border-gray-200 pb-10 dark:border-gray-800"
     >
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -41,7 +41,7 @@ export function CategorySection({
             className="h-7 w-1 rounded-full"
             style={{ backgroundColor: categoryColor }}
           />
-          <h2 className="text-xl font-display font-bold text-text-primary md:text-2xl">
+          <h2 className="text-xl font-display font-bold text-text-primary md:text-2xl dark:text-gray-100">
             {categoryName}
           </h2>
         </div>
@@ -56,7 +56,6 @@ export function CategorySection({
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Article principal */}
         <article className="group">
           <Link href={`/article/${mainArticle.slug}`} className="block">
             <div className="relative aspect-video w-full overflow-hidden rounded-lg">
@@ -70,17 +69,16 @@ export function CategorySection({
           </Link>
 
           <Link href={`/article/${mainArticle.slug}`}>
-            <h3 className="mt-3 text-lg font-display font-bold leading-tight text-text-primary transition-colors hover:text-accent">
+            <h3 className="mt-3 text-lg font-display font-bold leading-tight text-text-primary transition-colors hover:text-accent dark:text-gray-100">
               {mainArticle.title}
             </h3>
           </Link>
 
-          <p className="mt-2 text-sm text-text-secondary line-clamp-2">
+          <p className="mt-2 text-sm text-text-secondary line-clamp-2 dark:text-gray-400">
             {mainArticle.excerpt}
           </p>
         </article>
 
-        {/* Articles secondaires */}
         {secondaryArticles.length > 0 && (
           <div className="flex flex-col gap-5">
             {secondaryArticles.map((article) => (
@@ -100,11 +98,11 @@ export function CategorySection({
 
                 <div className="flex flex-col justify-center">
                   <Link href={`/article/${article.slug}`}>
-                    <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent">
+                    <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent dark:text-gray-100">
                       {article.title}
                     </h4>
                   </Link>
-                  <span className="mt-1 text-xs text-text-secondary">
+                  <span className="mt-1 text-xs text-text-secondary dark:text-gray-400">
                     {formatDate(article.publishedAt)}
                   </span>
                 </div>

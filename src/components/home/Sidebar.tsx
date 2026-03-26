@@ -6,7 +6,6 @@ interface SidebarProps {
   categories: Category[];
 }
 
-// Compte le nombre d'articles par categorie.
 function countByCategory(articles: Article[], slug: string): number {
   return articles.filter((a) => a.category.slug === slug).length;
 }
@@ -17,21 +16,21 @@ export function Sidebar({ articles, categories }: SidebarProps) {
   return (
     <div className="sticky top-24 space-y-6">
       {/* Widget articles populaires */}
-      <div className="rounded-lg bg-white p-5 shadow-sm">
-        <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary">
+      <div className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900">
+        <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
           Articles populaires
         </h3>
 
         <div className="space-y-4">
           {popular.map((article, i) => (
             <div key={article.id} className="flex items-start gap-3">
-              <span className="shrink-0 text-2xl font-bold leading-none text-gray-200">
+              <span className="shrink-0 text-2xl font-bold leading-none text-gray-200 dark:text-gray-700">
                 {String(i + 1).padStart(2, "0")}
               </span>
 
               <div>
                 <Link href={`/article/${article.slug}`}>
-                  <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent">
+                  <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent dark:text-gray-100">
                     {article.title}
                   </h4>
                 </Link>
@@ -48,8 +47,8 @@ export function Sidebar({ articles, categories }: SidebarProps) {
       </div>
 
       {/* Widget categories */}
-      <div className="rounded-lg bg-white p-5 shadow-sm">
-        <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary">
+      <div className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900">
+        <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
           Categories
         </h3>
 
@@ -58,7 +57,7 @@ export function Sidebar({ articles, categories }: SidebarProps) {
             <li key={cat.id}>
               <Link
                 href={`/categorie/${cat.slug}`}
-                className="flex items-center justify-between text-sm text-text-primary transition-colors hover:text-accent"
+                className="flex items-center justify-between text-sm text-text-primary transition-colors hover:text-accent dark:text-gray-300"
               >
                 <span className="flex items-center gap-2">
                   <span
@@ -67,7 +66,7 @@ export function Sidebar({ articles, categories }: SidebarProps) {
                   />
                   {cat.name}
                 </span>
-                <span className="rounded-full bg-surface px-2 py-0.5 text-xs text-text-secondary">
+                <span className="rounded-full bg-surface px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800 dark:text-gray-400">
                   {countByCategory(articles, cat.slug)}
                 </span>
               </Link>
@@ -77,8 +76,8 @@ export function Sidebar({ articles, categories }: SidebarProps) {
       </div>
 
       {/* Widget publicite (placeholder) */}
-      <div className="flex h-60 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-surface">
-        <span className="text-sm font-medium uppercase tracking-wider text-text-secondary">
+      <div className="flex h-60 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-surface dark:border-gray-700 dark:bg-gray-900">
+        <span className="text-sm font-medium uppercase tracking-wider text-text-secondary dark:text-gray-400">
           Publicite
         </span>
       </div>
