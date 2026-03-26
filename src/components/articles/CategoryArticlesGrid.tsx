@@ -21,8 +21,8 @@ export function CategoryArticlesGrid({ articles }: CategoryArticlesGridProps) {
   return (
     <>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {paged.map((article) => (
-          <ArticleCard key={article.id} article={article} variant="large" />
+        {paged.map((article, i) => (
+          <ArticleCard key={article.id} article={article} variant="large" index={i} />
         ))}
       </div>
 

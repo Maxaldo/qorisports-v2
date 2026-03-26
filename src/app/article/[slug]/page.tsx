@@ -113,8 +113,8 @@ export default async function ArticlePage({ params }: PageProps) {
           </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {related.map((a) => (
-              <ArticleCard key={a.id} article={a} variant="large" />
+            {related.map((a, i) => (
+              <ArticleCard key={a.id} article={a} variant="large" index={i} />
             ))}
           </div>
         </div>

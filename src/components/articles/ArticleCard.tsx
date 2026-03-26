@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDate } from "@/lib/api";
@@ -7,12 +10,30 @@ import { Badge } from "@/components/ui/Badge";
 interface ArticleCardProps {
   article: Article;
   variant?: "large" | "compact" | "horizontal";
+  index?: number;
 }
 
-export function ArticleCard({ article, variant = "large" }: ArticleCardProps) {
-  if (variant === "compact") return <CompactCard article={article} />;
-  if (variant === "horizontal") return <HorizontalCard article={article} />;
-  return <LargeCard article={article} />;
+// Carte d'article avec animation d'entree au scroll.
+export function ArticleCard({ article, variant = "large", index = 0 }: ArticleCardProps) {
+  const card =
+    variant === "compact" ? (
+      <CompactCard article={article} />
+    ) : variant === "horizontal" ? (
+      <HorizontalCard article={article} />
+    ) : (
+      <LargeCard article={article} />
+    );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+    >
+      {card}
+    </motion.div>
+  );
 }
 
 function LargeCard({ article }: { article: Article }) {

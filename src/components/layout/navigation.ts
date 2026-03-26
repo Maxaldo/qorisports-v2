@@ -35,7 +35,7 @@ export const navItems: NavItem[] = [
   },
   {
     label: "Coin des Parieurs",
-    href: "/categorie/coin-des-parieurs",
+    href: "/coin-des-parieurs",
     color: categories.find((category) => category.slug === "coin-des-parieurs")?.color,
   },
 ];

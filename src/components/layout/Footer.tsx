@@ -21,6 +21,12 @@ export default function Footer() {
             <p className="mt-3 text-sm text-white/85">
               La reference de l&apos;actualite sportive beninoise et africaine
             </p>
+            <Link
+              href="/a-propos"
+              className="mt-3 inline-block text-sm text-white/85 transition-opacity hover:opacity-80"
+            >
+              A propos
+            </Link>
           </div>
 
           <div>
