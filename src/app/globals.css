@@ -17,6 +17,16 @@
   --color-parieurs: #CA8A04;
   --font-family-display: var(--font-display), sans-serif;
   --font-family-body: var(--font-body), sans-serif;
+  --animate-marquee: marquee 35s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* Force le mode clair pour eviter un fond noir en dark mode systeme */

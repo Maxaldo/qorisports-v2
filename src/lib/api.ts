@@ -9,7 +9,26 @@ export function getArticles(): Article[] {
   );
 }
 
+// Retourne uniquement les articles mis en avant.
+export function getFeaturedArticles(): Article[] {
+  return getArticles().filter((a) => a.featured);
+}
+
+// Retourne les articles d'une categorie donnee, tries par date.
+export function getArticlesByCategory(slug: string): Article[] {
+  return getArticles().filter((a) => a.category.slug === slug);
+}
+
 // Retourne un article unique selon son slug.
 export function getArticleBySlug(slug: string): Article | undefined {
   return mockArticles.find((article) => article.slug === slug);
+}
+
+// Formate une date ISO en francais lisible (ex: "22 mars 2026").
+export function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 }
