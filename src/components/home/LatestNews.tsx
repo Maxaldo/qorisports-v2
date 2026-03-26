@@ -20,7 +20,7 @@ function MainArticle({ article }: { article: Article }) {
             src={article.coverImage}
             alt={article.title}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
           <span
             className="absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-bold uppercase text-white"
@@ -32,7 +32,7 @@ function MainArticle({ article }: { article: Article }) {
       </Link>
 
       <Link href={`/article/${article.slug}`}>
-        <h3 className="mt-4 text-xl font-display font-bold leading-tight text-text-primary transition-colors hover:text-accent md:text-2xl dark:text-gray-100">
+        <h3 className="mt-4 text-xl font-display font-bold leading-tight text-text-primary transition-colors duration-300 hover:text-accent md:text-2xl dark:text-gray-100">
           {article.title}
         </h3>
       </Link>
@@ -110,13 +110,25 @@ export function LatestNews({ articles }: LatestNewsProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+        <motion.div
+          className="lg:col-span-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <MainArticle article={mainArticle} />
-        </div>
+        </motion.div>
 
         <div className="flex flex-col gap-5">
-          {secondaryArticles.map((article) => (
-            <CompactArticle key={article.id} article={article} />
+          {secondaryArticles.map((article, i) => (
+            <motion.div
+              key={article.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.3 + i * 0.15 }}
+            >
+              <CompactArticle article={article} />
+            </motion.div>
           ))}
         </div>
       </div>

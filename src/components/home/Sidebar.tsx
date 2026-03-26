@@ -1,4 +1,8 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import { useRef } from "react";
 import type { Article, Category } from "@/lib/types";
 
 interface SidebarProps {
@@ -10,13 +14,21 @@ function countByCategory(articles: Article[], slug: string): number {
   return articles.filter((a) => a.category.slug === slug).length;
 }
 
+// Sidebar avec apparition progressive de chaque widget au scroll.
 export function Sidebar({ articles, categories }: SidebarProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
   const popular = articles.slice(0, 5);
 
   return (
-    <div className="sticky top-24 space-y-6">
+    <div ref={ref} className="sticky top-24 space-y-6">
       {/* Widget articles populaires */}
-      <div className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.4, delay: 0 }}
+        className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900"
+      >
         <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
           Articles populaires
         </h3>
@@ -44,10 +56,15 @@ export function Sidebar({ articles, categories }: SidebarProps) {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Widget categories */}
-      <div className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.4, delay: 0.2 }}
+        className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900"
+      >
         <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
           Categories
         </h3>
@@ -73,14 +90,19 @@ export function Sidebar({ articles, categories }: SidebarProps) {
             </li>
           ))}
         </ul>
-      </div>
+      </motion.div>
 
       {/* Widget publicite (placeholder) */}
-      <div className="flex h-60 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-surface dark:border-gray-700 dark:bg-gray-900">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.4, delay: 0.4 }}
+        className="flex h-60 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-surface dark:border-gray-700 dark:bg-gray-900"
+      >
         <span className="text-sm font-medium uppercase tracking-wider text-text-secondary dark:text-gray-400">
           Publicite
         </span>
-      </div>
+      </motion.div>
     </div>
   );
 }

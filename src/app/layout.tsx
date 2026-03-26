@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { PageTransition } from "@/components/layout/PageTransition";
 import { TopBar } from "@/components/layout/TopBar";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import "./globals.css";
@@ -47,7 +48,9 @@ export default function RootLayout({
       <body className="min-h-screen font-body bg-surface text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
         <TopBar />
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen">
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
         <ScrollToTop />
       </body>

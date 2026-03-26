@@ -28,14 +28,17 @@ export function CategorySection({
   const categorySlug = mainArticle.category.slug;
 
   return (
-    <motion.section
+    <section
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5 }}
       className="border-b border-gray-200 pb-10 dark:border-gray-800"
     >
-      <div className="mb-6 flex items-center justify-between">
+      {/* Titre qui glisse depuis la gauche */}
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        animate={inView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        className="mb-6 flex items-center justify-between"
+      >
         <div className="flex items-center gap-3">
           <span
             className="h-7 w-1 rounded-full"
@@ -53,23 +56,29 @@ export function CategorySection({
         >
           Voir tout &gt;
         </Link>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <article className="group">
+        {/* Article principal avec stagger */}
+        <motion.article
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="group"
+        >
           <Link href={`/article/${mainArticle.slug}`} className="block">
             <div className="relative aspect-video w-full overflow-hidden rounded-lg">
               <Image
                 src={mainArticle.coverImage}
                 alt={mainArticle.title}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               />
             </div>
           </Link>
 
           <Link href={`/article/${mainArticle.slug}`}>
-            <h3 className="mt-3 text-lg font-display font-bold leading-tight text-text-primary transition-colors hover:text-accent dark:text-gray-100">
+            <h3 className="mt-3 text-lg font-display font-bold leading-tight text-text-primary transition-colors duration-300 hover:text-accent dark:text-gray-100">
               {mainArticle.title}
             </h3>
           </Link>
@@ -77,12 +86,19 @@ export function CategorySection({
           <p className="mt-2 text-sm text-text-secondary line-clamp-2 dark:text-gray-400">
             {mainArticle.excerpt}
           </p>
-        </article>
+        </motion.article>
 
+        {/* Articles secondaires avec stagger progressif */}
         {secondaryArticles.length > 0 && (
           <div className="flex flex-col gap-5">
-            {secondaryArticles.map((article) => (
-              <article key={article.id} className="flex gap-4">
+            {secondaryArticles.map((article, i) => (
+              <motion.article
+                key={article.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.4 + i * 0.15 }}
+                className="flex gap-4"
+              >
                 <Link
                   href={`/article/${article.slug}`}
                   className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg"
@@ -106,11 +122,11 @@ export function CategorySection({
                     {formatDate(article.publishedAt)}
                   </span>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         )}
       </div>
-    </motion.section>
+    </section>
   );
 }

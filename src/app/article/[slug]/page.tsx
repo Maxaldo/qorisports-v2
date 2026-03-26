@@ -3,7 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/articles/ArticleCard";
+import { ArticleContent } from "@/components/articles/ArticleContent";
 import { ArticleMeta } from "@/components/articles/ArticleMeta";
+import { ReadingProgress } from "@/components/articles/ReadingProgress";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
 import {
@@ -48,7 +50,9 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">
-      <div className="mx-auto max-w-4xl px-4 pt-8">
+      <ReadingProgress />
+
+      <div id="article-body" className="mx-auto max-w-4xl px-4 pt-8">
         {/* Breadcrumb */}
         <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-text-secondary dark:text-gray-400">
           <Link href="/" className="transition-colors hover:text-accent">
@@ -91,10 +95,8 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        <div
-          className="prose prose-lg mt-10 max-w-none prose-p:text-text-secondary prose-p:leading-relaxed dark:prose-invert"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
+        {/* Contenu avec mode lecture confortable */}
+        <ArticleContent html={article.content} />
 
         <div className="mt-10">
           <ShareButtons
