@@ -1,3 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+/* Palette et polices du projet, declarees en variables CSS pour Tailwind v4 */
+@theme {
+  --color-primary: #0F172A;
+  --color-secondary: #84CC16;
+  --color-accent: #3B82F6;
+  --color-surface: #F8FAFC;
+  --color-text-primary: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-football: #16A34A;
+  --color-basketball: #EA580C;
+  --color-handball: #2563EB;
+  --color-athletisme: #DC2626;
+  --color-autres: #7C3AED;
+  --color-parieurs: #CA8A04;
+  --font-family-display: var(--font-display), sans-serif;
+  --font-family-body: var(--font-body), sans-serif;
+}
+
+/* Force le mode clair pour eviter un fond noir en dark mode systeme */
+@layer base {
+  html {
+    color-scheme: light;
+  }
+}
