@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
+@plugin "@tailwindcss/typography";
 
 /* Palette et polices du projet, declarees en variables CSS pour Tailwind v4 */
 @theme {
