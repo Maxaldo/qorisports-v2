@@ -6,7 +6,10 @@ import Link from "next/link";
 import { useMemo, useRef } from "react";
 import { formatViews } from "@/lib/api";
 import { standings } from "@/data/mock-standings";
+import { upcomingMatches, recentResults } from "@/data/mock-matches";
 import { StandingsTable } from "@/components/standings/StandingsTable";
+import { UpcomingMatches } from "@/components/matches/UpcomingMatches";
+import { RecentResults } from "@/components/matches/RecentResults";
 import type { Article, Category } from "@/lib/types";
 
 interface SidebarProps {
@@ -27,6 +30,9 @@ export function Sidebar({ articles, categories }: SidebarProps) {
 
   return (
     <div ref={ref} className="sticky top-24 space-y-6">
+      {/* Widget matchs a venir */}
+      <UpcomingMatches matches={upcomingMatches} compact />
+
       {/* Widget classement Ligue 1 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -50,6 +56,9 @@ export function Sidebar({ articles, categories }: SidebarProps) {
           </Link>
         </div>
       </motion.div>
+
+      {/* Widget resultats recents */}
+      <RecentResults matches={recentResults} />
 
       {/* Widget articles populaires */}
       <motion.div

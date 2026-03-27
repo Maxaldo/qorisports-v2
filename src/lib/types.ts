@@ -14,6 +14,20 @@ export interface Author {
   role: string;
 }
 
+export interface Match {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  date: string;
+  time: string;
+  venue: string;
+  league: string;
+  status: "upcoming" | "live" | "finished";
+  homeScore: number | null;
+  awayScore: number | null;
+  matchday: number;
+}
+
 export interface Article {
   id: string;
   title: string;
