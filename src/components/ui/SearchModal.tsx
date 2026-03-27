@@ -1,30 +1,59 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { formatDate, getArticles } from "@/lib/api";
+import { useEffect, useRef, useState } from "react";
+import { formatDate } from "@/lib/api";
+import { fetchAPI, transformPost } from "@/lib/wordpress";
 import { Badge } from "@/components/ui/Badge";
+import type { Article } from "@/lib/types";
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// Modal de recherche plein ecran avec filtrage en temps reel.
+// Modal de recherche plein ecran avec appel API WordPress et debounce 300ms.
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
-  const articles = useMemo(() => getArticles(), []);
+  const [results, setResults] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const results = useMemo(() => {
-    if (!query.trim()) return [];
-    const q = query.toLowerCase();
-    return articles.filter((a) => a.title.toLowerCase().includes(q));
-  }, [query, articles]);
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
 
-  // Fermeture avec la touche Escape.
+    setLoading(true);
+
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(async () => {
+      try {
+        const res = await fetchAPI("/posts", {
+          _embed: "true",
+          search: query,
+          per_page: "10",
+        });
+        const data = await res.json();
+        setResults(data.map(transformPost));
+      } catch {
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [query]);
+
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
@@ -39,9 +68,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     };
   }, [isOpen, onClose]);
 
-  // Reset de la saisie a la fermeture.
   useEffect(() => {
-    if (!isOpen) setQuery("");
+    if (!isOpen) {
+      setQuery("");
+      setResults([]);
+    }
   }, [isOpen]);
 
   return (
@@ -63,7 +94,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             className="mt-20 w-full max-w-2xl px-4"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Champ de recherche */}
             <div className="relative">
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-text-secondary" />
               <input
@@ -83,10 +113,13 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               </button>
             </div>
 
-            {/* Resultats de recherche */}
             {query.trim() && (
               <div className="mt-3 max-h-[60vh] overflow-y-auto rounded-xl bg-white shadow-xl dark:bg-gray-900">
-                {results.length > 0 ? (
+                {loading ? (
+                  <div className="flex items-center justify-center p-6">
+                    <Loader2 className="h-6 w-6 animate-spin text-accent" />
+                  </div>
+                ) : results.length > 0 ? (
                   <ul>
                     {results.map((article) => (
                       <li

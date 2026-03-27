@@ -8,25 +8,19 @@ import { ArticleMeta } from "@/components/articles/ArticleMeta";
 import { ReadingProgress } from "@/components/articles/ReadingProgress";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
-import {
-  getArticleBySlug,
-  getArticles,
-  getArticlesByCategory,
-} from "@/lib/api";
+import { getArticleBySlug, getArticlesByCategory } from "@/lib/api";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getArticles().map((article) => ({ slug: article.slug }));
-}
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) return { title: "Article non trouve" };
   return {
     title: article.title,
@@ -41,10 +35,13 @@ export async function generateMetadata({
 
 export default async function ArticlePage({ params }: PageProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
-  const related = getArticlesByCategory(article.category.slug)
+  const { articles: categoryArticles } = await getArticlesByCategory(
+    article.category.slug,
+  );
+  const related = categoryArticles
     .filter((a) => a.id !== article.id)
     .slice(0, 3);
 
@@ -53,7 +50,6 @@ export default async function ArticlePage({ params }: PageProps) {
       <ReadingProgress />
 
       <div id="article-body" className="mx-auto max-w-4xl px-4 pt-8">
-        {/* Breadcrumb */}
         <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-text-secondary dark:text-gray-400">
           <Link href="/" className="transition-colors hover:text-accent">
             Accueil
@@ -96,7 +92,6 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        {/* Contenu avec mode lecture confortable */}
         <ArticleContent html={article.content} />
 
         <div className="mt-10">

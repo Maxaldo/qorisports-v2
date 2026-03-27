@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { categories } from "@/data/mock-articles";
-import { getArticlesByCategory } from "@/lib/api";
+import { getArticlesByCategory, getCategories } from "@/lib/api";
 import { CategoryArticlesGrid } from "@/components/articles/CategoryArticlesGrid";
 
 interface PageProps {
   params: Promise<{ category: string }>;
 }
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const categories = await getCategories();
   return categories.map((cat) => ({ category: cat.slug }));
 }
 
@@ -16,7 +18,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { category: slug } = await params;
-  const category = categories.find((c) => c.slug === slug);
+  const { category } = await getArticlesByCategory(slug, 1, 1);
   if (!category) return { title: "Categorie non trouvee" };
   return {
     title: category.name,
@@ -30,10 +32,8 @@ export async function generateMetadata({
 
 export default async function CategoryPage({ params }: PageProps) {
   const { category: slug } = await params;
-  const category = categories.find((c) => c.slug === slug);
+  const { articles, category } = await getArticlesByCategory(slug);
   if (!category) notFound();
-
-  const articles = getArticlesByCategory(slug);
 
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">

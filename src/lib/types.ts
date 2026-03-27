@@ -4,6 +4,7 @@ export interface Category {
   slug: string;
   color: string;
   description: string;
+  count?: number;
 }
 
 export interface Author {

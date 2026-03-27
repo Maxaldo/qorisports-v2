@@ -14,10 +14,6 @@ interface SidebarProps {
   categories: Category[];
 }
 
-function countByCategory(articles: Article[], slug: string): number {
-  return articles.filter((a) => a.category.slug === slug).length;
-}
-
 // Sidebar avec apparition progressive de chaque widget au scroll.
 export function Sidebar({ articles, categories }: SidebarProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -97,34 +93,36 @@ export function Sidebar({ articles, categories }: SidebarProps) {
         </div>
       </motion.div>
 
-      {/* Widget categories */}
+      {/* Widget categories (max 8, triees par nombre d'articles) */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.4, delay: 0.3 }}
         className="rounded-lg bg-white p-5 shadow-sm dark:bg-gray-900"
       >
-        <h3 className="mb-4 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
+        <h3 className="mb-3 rounded bg-surface px-3 py-2 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
           Categories
         </h3>
 
-        <ul className="space-y-3">
-          {categories.map((cat) => (
+        <ul className="space-y-1">
+          {categories.slice(0, 8).map((cat) => (
             <li key={cat.id}>
               <Link
                 href={`/categorie/${cat.slug}`}
-                className="flex items-center justify-between text-sm text-text-primary transition-colors hover:text-accent dark:text-gray-300"
+                className="flex items-center justify-between rounded-md px-2 py-1.5 text-sm text-text-primary transition-colors hover:bg-surface hover:text-accent dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 <span className="flex items-center gap-2">
                   <span
-                    className="inline-block h-2.5 w-2.5 rounded-full"
+                    className="inline-block h-2 w-2 shrink-0 rounded-full"
                     style={{ backgroundColor: cat.color }}
                   />
-                  {cat.name}
+                  <span className="line-clamp-1">{cat.name}</span>
                 </span>
-                <span className="rounded-full bg-surface px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800 dark:text-gray-400">
-                  {countByCategory(articles, cat.slug)}
-                </span>
+                {(cat.count ?? 0) > 0 && (
+                  <span className="ml-2 shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-medium tabular-nums text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                    {cat.count}
+                  </span>
+                )}
               </Link>
             </li>
           ))}

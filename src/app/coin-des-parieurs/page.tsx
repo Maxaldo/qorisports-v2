@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Analyses, pronostics et conseils pour parier malin sur le sport beninois et africain.",
 };
 
+export const revalidate = 60;
+
 // Donnees mock des pronostics du jour.
 const pronostics = [
   {
@@ -40,15 +42,12 @@ const pronostics = [
   },
 ];
 
-export default function CoinDesParieursPage() {
-  const articles = getArticlesByCategory("coin-des-parieurs");
+export default async function CoinDesParieursPage() {
+  const { articles } = await getArticlesByCategory("coin-des-parieurs");
 
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">
-      {/* Header premium dore */}
-      <div
-        className="bg-gradient-to-r from-[#CA8A04] to-[#EAB308] px-4 py-14 text-center"
-      >
+      <div className="bg-gradient-to-r from-[#CA8A04] to-[#EAB308] px-4 py-14 text-center">
         <h1 className="font-display text-4xl font-bold text-white md:text-5xl">
           Coin des Parieurs
         </h1>
@@ -58,7 +57,6 @@ export default function CoinDesParieursPage() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 pt-10">
-        {/* Pronostics du jour */}
         <section>
           <h2 className="mb-6 font-display text-2xl font-bold text-text-primary dark:text-gray-100">
             Pronostics du jour
@@ -94,7 +92,6 @@ export default function CoinDesParieursPage() {
           </div>
         </section>
 
-        {/* Articles de la categorie */}
         {articles.length > 0 && (
           <section className="mt-14">
             <h2 className="mb-6 font-display text-2xl font-bold text-text-primary dark:text-gray-100">
@@ -114,7 +111,6 @@ export default function CoinDesParieursPage() {
           </section>
         )}
 
-        {/* Disclaimer responsabilite */}
         <div className="mt-14 flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-900">
           <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
           <p className="text-sm leading-relaxed text-text-secondary dark:text-gray-400">

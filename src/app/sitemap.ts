@@ -1,12 +1,16 @@
 import type { MetadataRoute } from "next";
-import { categories } from "@/data/mock-articles";
-import { getArticles } from "@/lib/api";
+import { getArticles, getCategories } from "@/lib/api";
 
 const BASE_URL = "https://qorisports.com";
 
-// Sitemap XML genere automatiquement pour le SEO.
-export default function sitemap(): MetadataRoute.Sitemap {
-  const articleEntries = getArticles().map((article) => ({
+// Sitemap XML genere dynamiquement depuis l'API WordPress.
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [{ articles }, categories] = await Promise.all([
+    getArticles(1, 100),
+    getCategories(),
+  ]);
+
+  const articleEntries = articles.map((article) => ({
     url: `${BASE_URL}/article/${article.slug}`,
     lastModified: new Date(article.publishedAt),
     changeFrequency: "weekly" as const,
