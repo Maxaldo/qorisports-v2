@@ -24,6 +24,14 @@ export const metadata: Metadata = {
   },
   description:
     "Toute l'actualite sportive beninoise et africaine : football, basketball, handball, athletisme et plus encore.",
+  // favicon.ico dans src/app/ est la methode officielle Next.js ; PNG pour Apple / haute resolution.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/favicon.png", type: "image/png", sizes: "180x180" }],
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",

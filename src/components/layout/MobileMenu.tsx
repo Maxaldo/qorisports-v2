@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { X } from "lucide-react";
 import Link from "next/link";
 import { navItems } from "@/components/layout/navigation";
@@ -34,7 +35,16 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="flex h-full flex-col px-6 py-6">
-              <div className="flex items-center justify-end">
+              <div className="flex items-center justify-between">
+                <Link href="/" onClick={onClose}>
+                  <Image
+                    src="/logo.png"
+                    alt="Qorisports"
+                    width={130}
+                    height={36}
+                    className="h-8 w-auto brightness-110 contrast-110"
+                  />
+                </Link>
                 <button
                   type="button"
                   onClick={onClose}

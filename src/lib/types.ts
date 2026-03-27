@@ -24,6 +24,7 @@ export interface Article {
   author: Author;
   publishedAt: string;
   readingTime: number;
+  views: number;
   featured: boolean;
   tags: string[];
 }

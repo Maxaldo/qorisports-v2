@@ -34,6 +34,11 @@ export const navItems: NavItem[] = [
     color: categories.find((category) => category.slug === "autres")?.color,
   },
   {
+    label: "Classement",
+    href: "/classement",
+    color: "#16A34A",
+  },
+  {
     label: "Coin des Parieurs",
     href: "/coin-des-parieurs",
     color: categories.find((category) => category.slug === "coin-des-parieurs")?.color,

@@ -1,10 +1,11 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
+import { Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { formatDate } from "@/lib/api";
+import { formatDate, formatViews } from "@/lib/api";
 import type { Article } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 
@@ -74,6 +75,11 @@ function LargeCard({ article }: { article: Article }) {
           <span className="font-medium">{article.author.name}</span>
           <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
           <span>{formatDate(article.publishedAt)}</span>
+          <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
+          <span className="flex items-center gap-1">
+            <Eye className="h-3 w-3" />
+            {formatViews(article.views)}
+          </span>
         </div>
       </div>
 
@@ -138,6 +144,11 @@ function HorizontalCard({ article }: { article: Article }) {
           <span className="font-medium">{article.author.name}</span>
           <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
           <span>{formatDate(article.publishedAt)}</span>
+          <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
+          <span className="flex items-center gap-1">
+            <Eye className="h-3 w-3" />
+            {formatViews(article.views)}
+          </span>
         </div>
       </div>
 

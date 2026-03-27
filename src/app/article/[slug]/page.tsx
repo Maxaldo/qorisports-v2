@@ -82,6 +82,7 @@ export default async function ArticlePage({ params }: PageProps) {
             author={article.author}
             publishedAt={article.publishedAt}
             readingTime={article.readingTime}
+            views={article.views}
           />
         </div>
 

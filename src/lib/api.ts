@@ -32,3 +32,12 @@ export function formatDate(dateString: string): string {
     year: "numeric",
   });
 }
+
+// Formate un nombre de vues (ex: 1200 -> "1.2k", 847 -> "847").
+export function formatViews(views: number): string {
+  if (views >= 1000) {
+    const k = views / 1000;
+    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}k`;
+  }
+  return String(views);
+}

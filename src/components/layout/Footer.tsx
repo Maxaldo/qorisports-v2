@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { navItems } from "@/components/layout/navigation";
 import {
@@ -15,9 +16,13 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-7xl px-4 py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="font-display text-2xl font-extrabold">
-              <span className="text-secondary">QORI</span>SPORTS
-            </h3>
+            <Image
+              src="/logo.png"
+              alt="Qorisports"
+              width={160}
+              height={44}
+              className="h-10 w-auto brightness-110 contrast-110"
+            />
             <p className="mt-3 text-sm text-white/85">
               La reference de l&apos;actualite sportive beninoise et africaine
             </p>
