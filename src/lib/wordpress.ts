@@ -146,7 +146,18 @@ export async function fetchAPI(
     }
   }
 
-  const res = await fetch(url.toString(), fetchOptions);
+  // On envoie un User-Agent de navigateur + en-tetes classiques : certains
+  // hebergeurs WordPress (pare-feu/securite) bloquent les requetes serveur
+  // sans User-Agent (ex: depuis Vercel), ce qui faisait echouer les appels.
+  const res = await fetch(url.toString(), {
+    ...fetchOptions,
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      Accept: "application/json",
+      ...(fetchOptions?.headers as Record<string, string> | undefined),
+    },
+  });
   if (!res.ok) {
     throw new Error(
       `Erreur API WordPress : ${res.status} ${res.statusText}`,
