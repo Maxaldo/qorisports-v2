@@ -1,80 +1,78 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { Trophy } from "lucide-react";
-import { useRef } from "react";
+import Link from "next/link";
 import type { Match } from "@/lib/types";
+import { TeamLogo } from "@/components/ui/TeamLogo";
 
 interface RecentResultsProps {
   matches: Match[];
+  max?: number;
 }
 
-export function RecentResults({ matches }: RecentResultsProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
+// Widget compact des resultats recents pour la sidebar.
+// Une ligne par match : logo + equipe dom | score | logo + equipe ext.
+export function RecentResults({ matches, max = 5 }: RecentResultsProps) {
+  const finished = matches.filter((m) => m.status === "finished").slice(0, max);
 
-  const finished = matches.filter((m) => m.status === "finished");
-  if (finished.length === 0) return null;
+  if (finished.length === 0) {
+    return (
+      <p className="px-3 py-4 text-center text-xs text-text-secondary dark:text-gray-500">
+        Aucun resultat disponible
+      </p>
+    );
+  }
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.4 }}
-      className="overflow-hidden rounded-lg bg-white shadow-sm dark:bg-gray-900"
-    >
-      <h3 className="flex items-center gap-2 bg-surface px-4 py-2.5 text-sm font-display font-bold uppercase tracking-wide text-text-primary dark:bg-gray-800 dark:text-gray-100">
-        <Trophy className="h-4 w-4 text-amber-500" />
-        Resultats recents
-      </h3>
+    <div className="divide-y divide-gray-100 dark:divide-gray-800">
+      {finished.map((match) => {
+        const homeWin =
+          match.homeScore !== null &&
+          match.awayScore !== null &&
+          match.homeScore > match.awayScore;
+        const awayWin =
+          match.homeScore !== null &&
+          match.awayScore !== null &&
+          match.awayScore > match.homeScore;
 
-      <div className="divide-y divide-gray-100 dark:divide-gray-800">
-        {finished.map((match) => {
-          const homeWin =
-            match.homeScore !== null &&
-            match.awayScore !== null &&
-            match.homeScore > match.awayScore;
-          const awayWin =
-            match.homeScore !== null &&
-            match.awayScore !== null &&
-            match.awayScore > match.homeScore;
+        return (
+          <div key={match.id} className="flex items-center gap-1 px-3 py-1.5">
+            <span
+              className={`flex min-w-0 flex-1 items-center justify-end gap-1 truncate text-right text-xs leading-tight ${
+                homeWin
+                  ? "font-bold text-text-primary dark:text-gray-100"
+                  : "text-text-secondary dark:text-gray-400"
+              }`}
+            >
+              <span className="truncate">{match.homeTeam}</span>
+              <TeamLogo src={match.homeLogo} name={match.homeTeam} size={16} />
+            </span>
 
-          return (
-            <div key={match.id} className="px-4 py-3">
-              <div className="flex items-center gap-2">
-                <span
-                  className={`min-w-0 flex-1 text-right text-sm leading-snug ${
-                    homeWin
-                      ? "font-bold text-text-primary dark:text-gray-100"
-                      : "text-text-secondary dark:text-gray-400"
-                  }`}
-                >
-                  {match.homeTeam}
-                </span>
+            <span className="shrink-0 rounded bg-primary px-2 py-0.5 text-xs font-bold tabular-nums text-white">
+              {match.homeScore}-{match.awayScore}
+            </span>
 
-                <span className="shrink-0 rounded bg-primary px-2.5 py-1 text-sm font-bold tabular-nums text-white">
-                  {match.homeScore} - {match.awayScore}
-                </span>
+            <span
+              className={`flex min-w-0 flex-1 items-center gap-1 truncate text-left text-xs leading-tight ${
+                awayWin
+                  ? "font-bold text-text-primary dark:text-gray-100"
+                  : "text-text-secondary dark:text-gray-400"
+              }`}
+            >
+              <TeamLogo src={match.awayLogo} name={match.awayTeam} size={16} />
+              <span className="truncate">{match.awayTeam}</span>
+            </span>
+          </div>
+        );
+      })}
 
-                <span
-                  className={`min-w-0 flex-1 text-left text-sm leading-snug ${
-                    awayWin
-                      ? "font-bold text-text-primary dark:text-gray-100"
-                      : "text-text-secondary dark:text-gray-400"
-                  }`}
-                >
-                  {match.awayTeam}
-                </span>
-              </div>
-
-              <p className="mt-1 text-center text-[10px] font-medium uppercase tracking-wide text-text-secondary dark:text-gray-500">
-                J{match.matchday}
-              </p>
-            </div>
-          );
-        })}
+      <div className="px-3 py-2">
+        <Link
+          href="/matchs"
+          className="text-xs font-medium text-accent transition-colors hover:text-accent/80"
+        >
+          Voir tous les resultats &gt;
+        </Link>
       </div>
-    </motion.div>
+    </div>
   );
 }

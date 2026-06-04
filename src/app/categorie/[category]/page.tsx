@@ -32,7 +32,9 @@ export async function generateMetadata({
 
 export default async function CategoryPage({ params }: PageProps) {
   const { category: slug } = await params;
-  const { articles, category } = await getArticlesByCategory(slug);
+  // On recupere jusqu'a 100 articles (max WP REST) pour que la pagination
+  // cote client couvre l'integralite de la categorie, pas seulement la 1re page.
+  const { articles, category } = await getArticlesByCategory(slug, 1, 100);
   if (!category) notFound();
 
   return (

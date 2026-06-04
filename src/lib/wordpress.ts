@@ -11,9 +11,90 @@ const CATEGORY_COLORS: Record<string, string> = {
   Autres: "#7C3AED",
   "Coin des Parieurs": "#CA8A04",
   "A LA UNE": "#3B82F6",
+  "Actualités": "#0EA5E9",
+  Actualites: "#0EA5E9",
+  "CAN 2025": "#16A34A",
+  "CNOS BEN": "#7C3AED",
+  Boxe: "#B91C1C",
+  Cyclisme: "#0D9488",
 };
 
 const DEFAULT_COLOR = "#6B7280";
+
+// --- Types bruts (sous-ensemble des champs WordPress utilises ici) ---
+interface WpRendered {
+  rendered?: string;
+}
+interface WpTerm {
+  id?: number;
+  name?: string;
+  slug?: string;
+  description?: string;
+}
+interface WpAuthor {
+  id?: number;
+  name?: string;
+  avatar_urls?: Record<string, string>;
+}
+interface WpMedia {
+  source_url?: string;
+}
+interface WpPost {
+  id: number;
+  date: string;
+  slug: string;
+  title?: WpRendered;
+  excerpt?: WpRendered;
+  content?: WpRendered;
+  meta?: { post_views_count?: unknown; views?: unknown };
+  "post-views-counter"?: unknown;
+  post_views?: unknown;
+  views?: unknown;
+  _embedded?: {
+    author?: WpAuthor[];
+    "wp:term"?: WpTerm[][];
+    "wp:featuredmedia"?: WpMedia[];
+  };
+}
+interface WpCategory {
+  id: number;
+  name?: string;
+  slug?: string;
+  description?: string;
+  count?: number;
+}
+
+// Etiquettes transversales (pas de vraies categories de sport).
+// Sert a choisir le bon badge et a les exclure de la navigation.
+export const NON_SPORT_SLUGS = new Set([
+  "a-la-une",
+  "actualites",
+  "non-classe",
+  "uncategorized",
+]);
+
+// Choisit la categorie a afficher : on privilegie une vraie discipline
+// sportive plutot qu'une etiquette transversale (A la une, Actualites...).
+function pickPrimaryCategory(terms: WpTerm[]): WpTerm | undefined {
+  if (!terms || terms.length === 0) return undefined;
+  return terms.find((t) => t.slug && !NON_SPORT_SLUGS.has(t.slug)) ?? terms[0];
+}
+
+// Lit le nombre de vues si une extension WordPress l'expose dans l'API REST
+// (ex: plugin "Post Views Counter" avec l'option REST activee). Couvre les
+// emplacements les plus courants ; renvoie 0 si aucune donnee n'est disponible.
+function extractViews(wpPost: WpPost): number {
+  const raw =
+    wpPost["post-views-counter"] ??
+    wpPost.post_views ??
+    wpPost.views ??
+    wpPost.meta?.post_views_count ??
+    wpPost.meta?.views ??
+    0;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : 0;
+}
+
 const PLACEHOLDER_IMAGE = "https://picsum.photos/800/450";
 const PLACEHOLDER_AVATAR =
   "https://secure.gravatar.com/avatar/?s=96&d=mm&r=g";
@@ -27,14 +108,14 @@ export function decodeHtml(html: string): string {
     "&gt;": ">",
     "&quot;": '"',
     "&#039;": "'",
-    "&#8217;": "\u2019",
-    "&#8216;": "\u2018",
-    "&#8220;": "\u201C",
-    "&#8221;": "\u201D",
-    "&#8211;": "\u2013",
-    "&#8212;": "\u2014",
+    "&#8217;": "’",
+    "&#8216;": "‘",
+    "&#8220;": "“",
+    "&#8221;": "”",
+    "&#8211;": "–",
+    "&#8212;": "—",
     "&nbsp;": " ",
-    "&#8230;": "\u2026",
+    "&#8230;": "…",
   };
   for (const [entity, char] of Object.entries(entities)) {
     text = text.replaceAll(entity, char);
@@ -76,11 +157,11 @@ export async function fetchAPI(
 }
 
 // Transforme un post WordPress brut en Article
-export function transformPost(wpPost: any): Article {
-  const wpCategory = wpPost._embedded?.["wp:term"]?.[0]?.[0];
+export function transformPost(wpPost: WpPost): Article {
   const wpAuthor = wpPost._embedded?.author?.[0];
-  const wpTags: any[] = wpPost._embedded?.["wp:term"]?.[1] || [];
-  const allTerms: any[] = wpPost._embedded?.["wp:term"]?.[0] || [];
+  const wpTags: WpTerm[] = wpPost._embedded?.["wp:term"]?.[1] || [];
+  const allTerms: WpTerm[] = wpPost._embedded?.["wp:term"]?.[0] || [];
+  const wpCategory = pickPrimaryCategory(allTerms);
 
   const category: Category = {
     id: wpCategory?.id?.toString() || "0",
@@ -101,7 +182,7 @@ export function transformPost(wpPost: any): Article {
   const readingTime = Math.max(1, Math.round(countWords(content) / 200));
 
   const isFeatured = allTerms.some(
-    (term: any) => term.name === "A LA UNE" || term.slug === "a-la-une",
+    (term) => term.name === "A LA UNE" || term.slug === "a-la-une",
   );
 
   return {
@@ -117,14 +198,14 @@ export function transformPost(wpPost: any): Article {
     author,
     publishedAt: wpPost.date,
     readingTime,
-    views: 0,
+    views: extractViews(wpPost),
     featured: isFeatured,
-    tags: wpTags.map((tag: any) => tag.name),
+    tags: wpTags.map((tag) => tag.name ?? "").filter(Boolean),
   };
 }
 
 // Transforme une categorie WordPress brute en Category
-export function transformCategory(wpCat: any): Category {
+export function transformCategory(wpCat: WpCategory): Category {
   return {
     id: wpCat.id.toString(),
     name: wpCat.name || "",

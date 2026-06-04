@@ -11,12 +11,16 @@ interface CategorySectionProps {
   categoryName: string;
   categoryColor: string;
   articles: Article[];
+  // Slug de la categorie de la section (pour le lien "Voir tout").
+  // A defaut, on retombe sur la categorie de l'article principal.
+  categorySlug?: string;
 }
 
 export function CategorySection({
   categoryName,
   categoryColor,
   articles,
+  categorySlug,
 }: CategorySectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -25,7 +29,7 @@ export function CategorySection({
 
   const mainArticle = articles[0];
   const secondaryArticles = articles.slice(1, 3);
-  const categorySlug = mainArticle.category.slug;
+  const linkSlug = categorySlug ?? mainArticle.category.slug;
 
   return (
     <section
@@ -50,7 +54,7 @@ export function CategorySection({
         </div>
 
         <Link
-          href={`/categorie/${categorySlug}`}
+          href={`/categorie/${linkSlug}`}
           className="text-sm font-medium transition-colors hover:text-accent"
           style={{ color: categoryColor }}
         >

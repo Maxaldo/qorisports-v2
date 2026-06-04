@@ -1,0 +1,41 @@
+name: Scraping Ligue 1 Benin
+
+on:
+  schedule:
+    # Toutes les heures (minute 0). Heure UTC.
+    - cron: "0 * * * *"
+  workflow_dispatch: {} # permet aussi un lancement manuel depuis l'onglet Actions
+
+permissions:
+  contents: write # autorise le commit des donnees mises a jour
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du depot
+        uses: actions/checkout@v4
+
+      - name: Installation de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installation des dependances
+        run: npm ci
+
+      - name: Lancement du scraper
+        run: npm run scrape
+
+      - name: Commit des donnees si elles ont change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/*.json
+          if git diff --staged --quiet; then
+            echo "Aucune donnee modifiee, rien a committer."
+          else
+            git commit -m "chore: mise a jour automatique des donnees Ligue 1"
+            git push
+          fi

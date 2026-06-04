@@ -5,6 +5,12 @@ import {
   getFeaturedArticles,
   getLatestArticles,
 } from "@/lib/api";
+import {
+  getLastUpdate,
+  getRecentResults,
+  getStandings,
+  getUpcomingFixtures,
+} from "@/lib/data";
 import { CategorySection } from "@/components/home/CategorySection";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { LatestNews } from "@/components/home/LatestNews";
@@ -19,6 +25,9 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
+// Categories mises en avant sur l'accueil, par ordre d'affichage.
+const HOME_CATEGORY_SLUGS = ["actualites", "can-2025", "football", "autres"];
+
 export default async function Home() {
   const [featured, latest, categories] = await Promise.all([
     getFeaturedArticles(),
@@ -28,13 +37,14 @@ export default async function Home() {
 
   const trending = latest.slice(0, 5);
 
-  const [footballResult, basketballResult] = await Promise.all([
-    getArticlesByCategory("football"),
-    getArticlesByCategory("basketball"),
-  ]);
+  const homeSections = await Promise.all(
+    HOME_CATEGORY_SLUGS.map((slug) => getArticlesByCategory(slug, 1, 4)),
+  );
 
-  const footballCat = categories.find((c) => c.slug === "football");
-  const basketballCat = categories.find((c) => c.slug === "basketball");
+  const standings = getStandings();
+  const upcomingMatches = getUpcomingFixtures();
+  const recentResults = getRecentResults();
+  const lastUpdate = getLastUpdate();
 
   return (
     <div className="bg-surface dark:bg-gray-950">
@@ -46,25 +56,28 @@ export default async function Home() {
           <div className="space-y-10 lg:col-span-8">
             <LatestNews articles={latest} />
 
-            {footballCat && footballResult.articles.length > 0 && (
-              <CategorySection
-                categoryName={footballCat.name}
-                categoryColor={footballCat.color}
-                articles={footballResult.articles}
-              />
-            )}
-
-            {basketballCat && basketballResult.articles.length > 0 && (
-              <CategorySection
-                categoryName={basketballCat.name}
-                categoryColor={basketballCat.color}
-                articles={basketballResult.articles}
-              />
+            {homeSections.map((section) =>
+              section.category && section.articles.length > 0 ? (
+                <CategorySection
+                  key={section.category.id}
+                  categoryName={section.category.name}
+                  categoryColor={section.category.color}
+                  categorySlug={section.category.slug}
+                  articles={section.articles}
+                />
+              ) : null,
             )}
           </div>
 
           <aside className="lg:col-span-4">
-            <Sidebar articles={latest} categories={categories} />
+            <Sidebar
+              articles={latest}
+              categories={categories}
+              standings={standings}
+              upcomingMatches={upcomingMatches}
+              recentResults={recentResults}
+              lastUpdate={lastUpdate}
+            />
           </aside>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { fetchAPI, transformPost, transformCategory } from "./wordpress";
+import { fetchAPI, transformPost, transformCategory, NON_SPORT_SLUGS } from "./wordpress";
 import type { Article, Category } from "./types";
 
 const REVALIDATE: RequestInit = {
@@ -127,9 +127,8 @@ export async function getFeaturedArticles(
   }
 }
 
-// Recupere les categories avec au moins un article, sans "Uncategorized" / "Non classe"
-const EXCLUDED_CATEGORY_SLUGS = ["uncategorized", "non-classe"];
-
+// Recupere les categories navigables : au moins un article, sans les
+// etiquettes transversales (Non classe, A la une, Actualites...).
 export async function getCategories(): Promise<Category[]> {
   try {
     const res = await fetchAPI(
@@ -140,8 +139,8 @@ export async function getCategories(): Promise<Category[]> {
     const data = await res.json();
     return data
       .filter(
-        (cat: any) =>
-          cat.count > 0 && !EXCLUDED_CATEGORY_SLUGS.includes(cat.slug),
+        (cat: { count: number; slug: string }) =>
+          cat.count > 0 && !NON_SPORT_SLUGS.has(cat.slug),
       )
       .map(transformCategory);
   } catch (error) {
@@ -164,63 +163,6 @@ export async function getLatestArticles(
     return data.map(transformPost);
   } catch (error) {
     console.error("Erreur getLatestArticles :", error);
-    return [];
-  }
-}
-
-// Recupere les articles par tag
-export async function getArticlesByTag(
-  tagSlug: string,
-  page: number = 1,
-): Promise<{ articles: Article[]; totalPages: number }> {
-  try {
-    const tagRes = await fetchAPI(
-      "/tags",
-      { slug: tagSlug },
-      REVALIDATE,
-    );
-    const tagData = await tagRes.json();
-    if (!tagData || tagData.length === 0) {
-      return { articles: [], totalPages: 0 };
-    }
-
-    const res = await fetchAPI(
-      "/posts",
-      {
-        _embed: "true",
-        tags: String(tagData[0].id),
-        per_page: "12",
-        page: String(page),
-      },
-      REVALIDATE,
-    );
-    const totalPages = parseInt(
-      res.headers.get("X-WP-TotalPages") || "1",
-      10,
-    );
-    const data = await res.json();
-    return { articles: data.map(transformPost), totalPages };
-  } catch (error) {
-    console.error("Erreur getArticlesByTag :", error);
-    return { articles: [], totalPages: 0 };
-  }
-}
-
-// Recherche d'articles par mot-cle
-export async function searchArticles(
-  query: string,
-): Promise<Article[]> {
-  try {
-    if (!query.trim()) return [];
-    const res = await fetchAPI(
-      "/posts",
-      { _embed: "true", search: query, per_page: "10" },
-      REVALIDATE,
-    );
-    const data = await res.json();
-    return data.map(transformPost);
-  } catch (error) {
-    console.error("Erreur searchArticles :", error);
     return [];
   }
 }

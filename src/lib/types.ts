@@ -18,6 +18,8 @@ export interface Match {
   id: string;
   homeTeam: string;
   awayTeam: string;
+  homeLogo: string;
+  awayLogo: string;
   date: string;
   time: string;
   venue: string;
@@ -25,7 +27,7 @@ export interface Match {
   status: "upcoming" | "live" | "finished";
   homeScore: number | null;
   awayScore: number | null;
-  matchday: number;
+  matchday: string;
 }
 
 export interface Article {

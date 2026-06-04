@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { upcomingMatches, recentResults } from "@/data/mock-matches";
-import { UpcomingMatches } from "@/components/matches/UpcomingMatches";
-import { RecentResults } from "@/components/matches/RecentResults";
+import { getLastUpdate, getRecentResults, getUpcomingFixtures } from "@/lib/data";
+import type { Match } from "@/lib/types";
+import { TeamLogo } from "@/components/ui/TeamLogo";
 
 export const metadata: Metadata = {
   title: "Calendrier Ligue 1 Beninoise",
@@ -10,9 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default function MatchsPage() {
+  const upcoming = getUpcomingFixtures();
+  const results = getRecentResults();
+  const lastUpdate = getLastUpdate();
+
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">
-      {/* Header */}
       <div className="bg-primary px-4 py-14 text-center">
         <h1 className="font-display text-4xl font-bold text-white md:text-5xl">
           Calendrier Ligue 1 Beninoise
@@ -27,11 +30,17 @@ export default function MatchsPage() {
             Matchs a venir
           </h2>
 
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            {upcomingMatches.map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
-          </div>
+          {upcoming.length > 0 ? (
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              {upcoming.map((match) => (
+                <MatchCard key={match.id} match={match} />
+              ))}
+            </div>
+          ) : (
+            <p className="py-10 text-center text-text-secondary dark:text-gray-400">
+              Aucun match a venir pour le moment.
+            </p>
+          )}
         </section>
 
         {/* Resultats recents */}
@@ -40,58 +49,74 @@ export default function MatchsPage() {
             Derniers resultats
           </h2>
 
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            {recentResults.map((match) => (
-              <ResultCard key={match.id} match={match} />
-            ))}
-          </div>
+          {results.length > 0 ? (
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              {results.map((match) => (
+                <ResultCard key={match.id} match={match} />
+              ))}
+            </div>
+          ) : (
+            <p className="py-10 text-center text-text-secondary dark:text-gray-400">
+              Aucun resultat disponible.
+            </p>
+          )}
         </section>
+
+        {lastUpdate && (
+          <p className="mt-10 text-center text-xs text-text-secondary dark:text-gray-500">
+            Derniere mise a jour :{" "}
+            {new Date(lastUpdate).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        )}
       </div>
     </div>
   );
 }
 
-// Carte de match a venir
-function MatchCard({ match }: { match: (typeof upcomingMatches)[number] }) {
-  const dateObj = new Date(match.date);
-  const formattedDate = dateObj.toLocaleDateString("fr-FR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
-
+function MatchCard({ match }: { match: Match }) {
   return (
     <div className="rounded-xl bg-white p-5 shadow-sm dark:bg-gray-900">
       <div className="flex items-center justify-between text-xs text-text-secondary dark:text-gray-400">
         <span className="font-semibold uppercase tracking-wide">
-          J{match.matchday}
+          {match.matchday}
         </span>
-        <span className="capitalize">{formattedDate}</span>
+        <span>{match.date}</span>
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-4">
-        <p className="flex-1 text-right text-sm font-semibold text-text-primary dark:text-gray-100">
-          {match.homeTeam}
-        </p>
+        <div className="flex flex-1 items-center justify-end gap-2 text-right">
+          <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
+            {match.homeTeam}
+          </p>
+          <TeamLogo src={match.homeLogo} name={match.homeTeam} size={28} />
+        </div>
+
         <span className="shrink-0 rounded-md bg-accent/10 px-3 py-1 text-sm font-bold text-accent">
           VS
         </span>
-        <p className="flex-1 text-left text-sm font-semibold text-text-primary dark:text-gray-100">
-          {match.awayTeam}
-        </p>
+
+        <div className="flex flex-1 items-center gap-2 text-left">
+          <TeamLogo src={match.awayLogo} name={match.awayTeam} size={28} />
+          <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
+            {match.awayTeam}
+          </p>
+        </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-center gap-2 text-xs text-text-secondary dark:text-gray-400">
-        <span className="font-medium">{match.time}</span>
-        <span className="h-1 w-1 rounded-full bg-text-secondary/40" />
-        <span>{match.venue}</span>
-      </div>
+      <p className="mt-3 text-center text-xs font-medium text-text-secondary dark:text-gray-400">
+        {match.time}
+      </p>
     </div>
   );
 }
 
-// Carte de resultat
-function ResultCard({ match }: { match: (typeof recentResults)[number] }) {
+function ResultCard({ match }: { match: Match }) {
   const homeWin =
     match.homeScore !== null &&
     match.awayScore !== null &&
@@ -104,38 +129,36 @@ function ResultCard({ match }: { match: (typeof recentResults)[number] }) {
   return (
     <div className="rounded-xl bg-white p-5 shadow-sm dark:bg-gray-900">
       <p className="text-center text-xs font-semibold uppercase tracking-wide text-text-secondary dark:text-gray-400">
-        J{match.matchday}
+        {match.matchday}
       </p>
 
       <div className="mt-4 flex items-center justify-between gap-3">
-        <p
-          className={`flex-1 text-right text-sm leading-snug ${
+        <div
+          className={`flex flex-1 items-center justify-end gap-2 text-right text-sm leading-snug ${
             homeWin
               ? "font-bold text-text-primary dark:text-gray-100"
               : "text-text-secondary dark:text-gray-400"
           }`}
         >
-          {match.homeTeam}
-        </p>
+          <span>{match.homeTeam}</span>
+          <TeamLogo src={match.homeLogo} name={match.homeTeam} size={24} />
+        </div>
 
         <span className="shrink-0 rounded-lg bg-primary px-4 py-2 text-lg font-extrabold tabular-nums text-white">
           {match.homeScore} - {match.awayScore}
         </span>
 
-        <p
-          className={`flex-1 text-left text-sm leading-snug ${
+        <div
+          className={`flex flex-1 items-center gap-2 text-left text-sm leading-snug ${
             awayWin
               ? "font-bold text-text-primary dark:text-gray-100"
               : "text-text-secondary dark:text-gray-400"
           }`}
         >
-          {match.awayTeam}
-        </p>
+          <TeamLogo src={match.awayLogo} name={match.awayTeam} size={24} />
+          <span>{match.awayTeam}</span>
+        </div>
       </div>
-
-      <p className="mt-3 text-center text-xs text-text-secondary dark:text-gray-400">
-        {match.venue}
-      </p>
     </div>
   );
 }
