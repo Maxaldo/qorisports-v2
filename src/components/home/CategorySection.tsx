@@ -76,7 +76,7 @@ export function CategorySection({
                 src={mainArticle.coverImage}
                 alt={mainArticle.title}
                 fill
-                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
               />
             </div>
           </Link>

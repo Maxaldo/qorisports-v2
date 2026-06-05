@@ -57,7 +57,7 @@ function LargeCard({ article }: { article: Article }) {
           src={article.coverImage}
           alt={article.title}
           fill
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
         />
         <div className="absolute left-3 top-3">
           <Badge label={article.category.name} color={article.category.color} />
@@ -128,7 +128,7 @@ function HorizontalCard({ article }: { article: Article }) {
           src={article.coverImage}
           alt={article.title}
           fill
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
         />
       </div>
 

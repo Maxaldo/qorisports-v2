@@ -54,7 +54,7 @@ export function HeroSlider({ articles }: HeroSliderProps) {
               src={article.coverImage}
               alt={article.title}
               fill
-              className="object-cover"
+              className="object-cover object-top"
               priority
             />
           </motion.div>

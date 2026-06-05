@@ -88,7 +88,7 @@ export default async function ArticlePage({ params }: PageProps) {
             alt={article.title}
             fill
             priority
-            className="object-cover"
+            className="object-cover object-top"
           />
         </div>
 

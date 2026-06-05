@@ -20,7 +20,7 @@ function MainArticle({ article }: { article: Article }) {
             src={article.coverImage}
             alt={article.title}
             fill
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
           />
           <span
             className="absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-bold uppercase text-white"
