@@ -107,19 +107,22 @@ export function decodeHtml(html: string): string {
     "&lt;": "<",
     "&gt;": ">",
     "&quot;": '"',
-    "&#039;": "'",
-    "&#8217;": "’",
-    "&#8216;": "‘",
-    "&#8220;": "“",
-    "&#8221;": "”",
-    "&#8211;": "–",
-    "&#8212;": "—",
     "&nbsp;": " ",
-    "&#8230;": "…",
+    "&laquo;": "«",
+    "&raquo;": "»",
+    "&hellip;": "…",
   };
   for (const [entity, char] of Object.entries(entities)) {
     text = text.replaceAll(entity, char);
   }
+  // Decode toutes les entites numeriques restantes : decimales (&#038; -> &,
+  // &#8217; -> apostrophe) et hexadecimales (&#x27; -> ').
+  text = text.replace(/&#(\d+);/g, (_m, n) =>
+    String.fromCodePoint(parseInt(n, 10)),
+  );
+  text = text.replace(/&#[xX]([0-9a-fA-F]+);/g, (_m, n) =>
+    String.fromCodePoint(parseInt(n, 16)),
+  );
   return text.trim();
 }
 
