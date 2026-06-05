@@ -52,12 +52,14 @@ function LargeCard({ article }: { article: Article }) {
       href={`/article/${article.slug}`}
       className="group relative block overflow-hidden rounded-lg bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg dark:bg-gray-900 dark:hover:shadow-gray-900"
     >
-      <div className="relative aspect-video w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden">
         <Image
           src={article.coverImage}
           alt={article.title}
-          fill
-          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="h-auto w-full transition-transform duration-500 ease-out group-hover:scale-105"
         />
         <div className="absolute left-3 top-3">
           <Badge label={article.category.name} color={article.category.color} />

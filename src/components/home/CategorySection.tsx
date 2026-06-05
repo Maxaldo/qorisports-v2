@@ -71,12 +71,14 @@ export function CategorySection({
           className="group"
         >
           <Link href={`/article/${mainArticle.slug}`} className="block">
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+            <div className="w-full overflow-hidden rounded-lg">
               <Image
                 src={mainArticle.coverImage}
                 alt={mainArticle.title}
-                fill
-                className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="h-auto w-full transition-transform duration-500 ease-out group-hover:scale-105"
               />
             </div>
           </Link>

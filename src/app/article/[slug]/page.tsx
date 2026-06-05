@@ -82,13 +82,15 @@ export default async function ArticlePage({ params }: PageProps) {
           />
         </div>
 
-        <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-xl">
+        <div className="mt-8 w-full overflow-hidden rounded-xl">
           <Image
             src={article.coverImage}
             alt={article.title}
-            fill
+            width={0}
+            height={0}
+            sizes="100vw"
             priority
-            className="object-cover object-top"
+            className="h-auto w-full"
           />
         </div>
 

@@ -15,12 +15,14 @@ function MainArticle({ article }: { article: Article }) {
   return (
     <article>
       <Link href={`/article/${article.slug}`} className="group block">
-        <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+        <div className="w-full overflow-hidden rounded-lg">
           <Image
             src={article.coverImage}
             alt={article.title}
-            fill
-            className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="h-auto w-full transition-transform duration-500 ease-out group-hover:scale-105"
           />
           <span
             className="absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-bold uppercase text-white"
