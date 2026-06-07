@@ -212,23 +212,42 @@
     "position": 12,
     "team": "Ayema",
     "logo": "https://static.flashscore.com/res/image/data/MiXAqaUH-f3CPRD9o.png",
-    "played": 31,
+    "played": 32,
     "won": 9,
     "drawn": 11,
-    "lost": 11,
+    "lost": 12,
     "goalsFor": 17,
-    "goalsAgainst": 17,
-    "goalDifference": 0,
+    "goalsAgainst": 18,
+    "goalDifference": -1,
     "points": 38,
     "form": [
+      "L",
       "W",
       "W",
-      "D",
-      "W"
+      "D"
     ]
   },
   {
     "position": 13,
+    "team": "Dragons",
+    "logo": "https://static.flashscore.com/res/image/data/IHAuhN6k-SlMulgD4.png",
+    "played": 32,
+    "won": 9,
+    "drawn": 9,
+    "lost": 14,
+    "goalsFor": 29,
+    "goalsAgainst": 42,
+    "goalDifference": -13,
+    "points": 36,
+    "form": [
+      "W",
+      "L",
+      "L",
+      "D"
+    ]
+  },
+  {
+    "position": 14,
     "team": "Bani Ganse",
     "logo": "https://static.flashscore.com/res/image/data/GvKoy9BN-G0BrANLc.png",
     "played": 32,
@@ -247,7 +266,7 @@
     ]
   },
   {
-    "position": 14,
+    "position": 15,
     "team": "Krake",
     "logo": "https://static.flashscore.com/res/image/data/KrmjbeA6-A11vW5xH.png",
     "played": 32,
@@ -263,25 +282,6 @@
       "D",
       "L",
       "W"
-    ]
-  },
-  {
-    "position": 15,
-    "team": "Dragons",
-    "logo": "https://static.flashscore.com/res/image/data/IHAuhN6k-SlMulgD4.png",
-    "played": 31,
-    "won": 8,
-    "drawn": 9,
-    "lost": 14,
-    "goalsFor": 28,
-    "goalsAgainst": 42,
-    "goalDifference": -14,
-    "points": 33,
-    "form": [
-      "L",
-      "L",
-      "D",
-      "D"
     ]
   },
   {
