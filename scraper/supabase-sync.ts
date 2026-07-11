@@ -5,22 +5,29 @@ import * as path from "path";
 import { LEAGUE_NAME, SEASON } from "./config.js";
 import type { StandingRow, MatchResult, UpcomingMatch } from "./types.js";
 
-// --- Lecture .env.local (gere encodages Windows) ---
+// --- Lecture .env.local (gere encodages Windows) + variables d'environnement
+// (GitHub Actions n'a pas de .env.local : les cles viennent des secrets) ---
 function readEnv(): Record<string, string> {
-  const buf = fs.readFileSync(path.resolve(process.cwd(), ".env.local"));
-  let raw = buf.includes(0) ? buf.toString("utf16le") : buf.toString("utf-8");
-  raw = raw.replace(/^﻿/, "");
   const env: Record<string, string> = {};
-  for (const line of raw.split(/\r?\n/)) {
-    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
-    if (m) env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+  try {
+    const buf = fs.readFileSync(path.resolve(process.cwd(), ".env.local"));
+    let raw = buf.includes(0) ? buf.toString("utf16le") : buf.toString("utf-8");
+    raw = raw.replace(/^﻿/, "");
+    for (const line of raw.split(/\r?\n/)) {
+      const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+      if (m) env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+    }
+  } catch {
+    // pas de .env.local (ex: CI) : on se rabat sur process.env
   }
   return env;
 }
 
 const env = readEnv();
-const URL_BASE = env.NEXT_PUBLIC_SUPABASE_URL;
-const SERVICE = env.SUPABASE_SERVICE_ROLE_KEY;
+const URL_BASE =
+  env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const SERVICE =
+  env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 const H = {
   apikey: SERVICE,
