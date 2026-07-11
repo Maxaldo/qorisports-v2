@@ -5,8 +5,7 @@ import { Loader2, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { formatDate } from "@/lib/api";
-import { fetchAPI, transformPost } from "@/lib/wordpress";
+import { formatDate, searchArticles } from "@/lib/api";
 import { Badge } from "@/components/ui/Badge";
 import type { Article } from "@/lib/types";
 
@@ -35,13 +34,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
     timerRef.current = setTimeout(async () => {
       try {
-        const res = await fetchAPI("/posts", {
-          _embed: "true",
-          search: query,
-          per_page: "10",
-        });
-        const data = await res.json();
-        setResults(data.map(transformPost));
+        setResults(await searchArticles(query, 10));
       } catch {
         setResults([]);
       } finally {

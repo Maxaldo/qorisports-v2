@@ -9,10 +9,12 @@ export const metadata: Metadata = {
     "Calendrier complet, matchs a venir et resultats recents de la Ligue 1 beninoise de football, saison 2025-2026.",
 };
 
-export default function MatchsPage() {
-  const upcoming = getUpcomingFixtures();
-  const results = getRecentResults();
-  const lastUpdate = getLastUpdate();
+export default async function MatchsPage() {
+  const [upcoming, results, lastUpdate] = await Promise.all([
+    getUpcomingFixtures(),
+    getRecentResults(),
+    getLastUpdate(),
+  ]);
 
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">

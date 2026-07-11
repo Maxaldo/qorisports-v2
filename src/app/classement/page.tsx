@@ -9,9 +9,11 @@ export const metadata: Metadata = {
     "Classement complet de la Ligue 1 beninoise de football, saison 2025-2026. Points, resultats et forme des equipes.",
 };
 
-export default function ClassementPage() {
-  const standings = getStandings();
-  const lastUpdate = getLastUpdate();
+export default async function ClassementPage() {
+  const [standings, lastUpdate] = await Promise.all([
+    getStandings(),
+    getLastUpdate(),
+  ]);
 
   const bestAttack = [...standings].sort((a, b) => b.goalsFor - a.goalsFor)[0];
   const bestDefense = [...standings].sort(

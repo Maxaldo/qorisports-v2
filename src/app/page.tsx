@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import {
+  getActiveAd,
   getArticlesByCategory,
   getCategories,
   getFeaturedArticles,
@@ -29,10 +30,11 @@ export const revalidate = 60;
 const HOME_CATEGORY_SLUGS = ["actualites", "can-2025", "football", "autres"];
 
 export default async function Home() {
-  const [featured, latest, categories] = await Promise.all([
+  const [featured, latest, categories, ad] = await Promise.all([
     getFeaturedArticles(),
     getLatestArticles(20),
     getCategories(),
+    getActiveAd("sidebar"),
   ]);
 
   const trending = latest.slice(0, 5);
@@ -41,10 +43,13 @@ export default async function Home() {
     HOME_CATEGORY_SLUGS.map((slug) => getArticlesByCategory(slug, 1, 4)),
   );
 
-  const standings = getStandings();
-  const upcomingMatches = getUpcomingFixtures();
-  const recentResults = getRecentResults();
-  const lastUpdate = getLastUpdate();
+  const [standings, upcomingMatches, recentResults, lastUpdate] =
+    await Promise.all([
+      getStandings(),
+      getUpcomingFixtures(),
+      getRecentResults(),
+      getLastUpdate(),
+    ]);
 
   return (
     <div className="bg-surface dark:bg-gray-950">
@@ -77,6 +82,7 @@ export default async function Home() {
               upcomingMatches={upcomingMatches}
               recentResults={recentResults}
               lastUpdate={lastUpdate}
+              ad={ad}
             />
           </aside>
         </div>

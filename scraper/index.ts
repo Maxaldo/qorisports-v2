@@ -4,6 +4,10 @@ import { OUTPUT_DIR, LEAGUE_NAME, SEASON } from "./config.js";
 import { scrapeStandings } from "./scrape-standings.js";
 import { scrapeResults } from "./scrape-results.js";
 import { scrapeFixtures } from "./scrape-fixtures.js";
+import {
+  syncMatchesToSupabase,
+  syncStandingsToSupabase,
+} from "./supabase-sync.js";
 
 async function main() {
   console.log("=".repeat(60));
@@ -26,6 +30,17 @@ async function main() {
   // 3. Matchs a venir
   console.log("--- Etape 3/3 : Calendrier ---");
   const fixtures = await scrapeFixtures();
+  console.log();
+
+  // 4. Synchronisation vers Supabase (non fatale : les JSON restent la
+  // solution de secours si la synchro echoue)
+  console.log("--- Etape 4/4 : Synchronisation Supabase ---");
+  try {
+    await syncStandingsToSupabase(standings);
+    await syncMatchesToSupabase(results, fixtures);
+  } catch (err) {
+    console.error("  ⚠️ Synchro Supabase echouee (JSON conserves) :", err);
+  }
   console.log();
 
   // Sauvegarde du timestamp de derniere mise a jour

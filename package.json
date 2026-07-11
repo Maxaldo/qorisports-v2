@@ -8,12 +8,18 @@
     "start": "next start",
     "lint": "eslint",
     "favicon": "node scripts/generate-favicon.mjs",
+    "check:supabase": "node scripts/check-supabase.mjs",
+    "check:security": "node scripts/check-security.mjs",
+    "import:wordpress": "node scripts/import-wordpress.mjs",
+    "migrate:images": "node scripts/migrate-images.mjs",
+    "check:images": "node scripts/check-images.mjs",
     "scrape": "tsx scraper/index.ts",
     "scrape:standings": "tsx scraper/scrape-standings.ts",
     "scrape:results": "tsx scraper/scrape-results.ts",
     "scrape:fixtures": "tsx scraper/scrape-fixtures.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.2",
     "@tailwindcss/typography": "^0.5.19",
     "cheerio": "^1.2.0",
     "framer-motion": "^12.38.0",

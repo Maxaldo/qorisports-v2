@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Export WordPress (donnees sensibles : hash de mots de passe dans le .sql)
+*.sql
+export/
+
+# Prompts internes et fichiers de debug (rester en local)
+PROMPT-CURSOR-*.md
+scraper/debug-html/

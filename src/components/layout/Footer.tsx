@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { navItems } from "@/components/layout/navigation";
+import { NewsletterForm } from "@/components/layout/NewsletterForm";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -94,6 +95,10 @@ export default function Footer() {
               contact@qorisports.com
             </a>
           </div>
+        </div>
+
+        <div className="mt-8 border-t border-white/30 pt-8">
+          <NewsletterForm />
         </div>
 
         <div className="mt-8 border-t border-white/30 pt-4 text-sm text-white/80 md:flex md:items-center md:justify-between">

@@ -11,8 +11,13 @@ import {
   Trophy,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useRef } from "react";
-import { formatViews } from "@/lib/api";
+import { useEffect, useMemo, useRef } from "react";
+import {
+  formatViews,
+  incrementAdClicks,
+  incrementAdImpressions,
+  type Ad,
+} from "@/lib/api";
 import { StandingsTable } from "@/components/standings/StandingsTable";
 import { UpcomingMatches } from "@/components/matches/UpcomingMatches";
 import { RecentResults } from "@/components/matches/RecentResults";
@@ -26,6 +31,7 @@ interface SidebarProps {
   upcomingMatches: Match[];
   recentResults: Match[];
   lastUpdate?: string | null;
+  ad?: Ad | null;
 }
 
 // Conteneur generique pour chaque widget de la sidebar.
@@ -69,9 +75,15 @@ export function Sidebar({
   upcomingMatches,
   recentResults,
   lastUpdate,
+  ad,
 }: SidebarProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  // Compte une impression publicitaire par affichage de la page
+  useEffect(() => {
+    if (ad) incrementAdImpressions(ad.id);
+  }, [ad]);
 
   const popular = useMemo(
     () => [...articles].sort((a, b) => b.views - a.views).slice(0, 5),
@@ -80,7 +92,38 @@ export function Sidebar({
 
   return (
     <div ref={ref} className="sticky top-24 flex flex-col gap-6">
-      {/* 1. Matchs a venir (max 3) */}
+      {/* 1. Bloc pub — en tete de colonne pour une visibilite maximale */}
+      <SidebarWidget
+        icon={<Megaphone className="h-4 w-4 text-red-500" />}
+        title="Publicite"
+        delay={0}
+        inView={inView}
+      >
+        {ad ? (
+          <a
+            href={ad.link_url || "#"}
+            target={ad.link_url ? "_blank" : undefined}
+            rel="noopener noreferrer sponsored"
+            onClick={() => incrementAdClicks(ad.id)}
+            className="block"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={ad.image_url}
+              alt={ad.name}
+              className="h-auto w-full object-cover"
+            />
+          </a>
+        ) : (
+          <div className="flex h-48 items-center justify-center">
+            <span className="text-xs font-medium uppercase tracking-wider text-text-secondary dark:text-gray-500">
+              Espace publicitaire
+            </span>
+          </div>
+        )}
+      </SidebarWidget>
+
+      {/* 2. Matchs a venir (max 3) */}
       <SidebarWidget
         icon={<Calendar className="h-4 w-4 text-accent" />}
         title="Matchs a venir"
@@ -201,19 +244,6 @@ export function Sidebar({
         </p>
       )}
 
-      {/* 6. Bloc pub placeholder */}
-      <SidebarWidget
-        icon={<Megaphone className="h-4 w-4 text-gray-400" />}
-        title="Publicite"
-        delay={0.25}
-        inView={inView}
-      >
-        <div className="flex h-48 items-center justify-center">
-          <span className="text-xs font-medium uppercase tracking-wider text-text-secondary dark:text-gray-500">
-            Espace publicitaire
-          </span>
-        </div>
-      </SidebarWidget>
     </div>
   );
 }

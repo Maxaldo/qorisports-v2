@@ -10,7 +10,7 @@ export function TrendingBar({ articles }: TrendingBarProps) {
   const items = articles.slice(0, 5);
 
   return (
-    <div className="flex items-stretch bg-accent text-white overflow-hidden">
+    <div className="flex items-stretch bg-red-600 text-white overflow-hidden">
       <div className="shrink-0 flex items-center bg-black/20 px-5 py-2.5 text-xs font-bold uppercase tracking-wider">
         Tendances
       </div>
