@@ -52,7 +52,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold">Suivez-nous</h4>
             <div className="mt-3 flex items-center gap-3">
               <Link
-                href="https://facebook.com"
+                href="https://www.facebook.com/QorisportsBenin/"
                 aria-label="Facebook"
                 target="_blank"
                 rel="noreferrer"

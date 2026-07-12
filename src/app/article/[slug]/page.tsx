@@ -6,6 +6,7 @@ import { ArticleCard } from "@/components/articles/ArticleCard";
 import { ArticleContent } from "@/components/articles/ArticleContent";
 import { ArticleMeta } from "@/components/articles/ArticleMeta";
 import { ReadingProgress } from "@/components/articles/ReadingProgress";
+import { ViewTracker } from "@/components/articles/ViewTracker";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
 import { getArticleBySlug, getArticlesByCategory } from "@/lib/api";
@@ -47,6 +48,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">
+      <ViewTracker slug={article.slug} />
       <ReadingProgress />
 
       <div id="article-body" className="mx-auto max-w-4xl px-4 pt-8">

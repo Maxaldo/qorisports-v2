@@ -85,7 +85,7 @@ export function Navbar() {
                 alt="Qorisports"
                 width={280}
                 height={64}
-                className="h-25 w-auto dark:brightness-110 dark:contrast-110"
+                className="h-12 w-auto dark:brightness-110 dark:contrast-110"
                 priority
               />
             </Link>

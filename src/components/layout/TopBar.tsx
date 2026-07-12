@@ -25,7 +25,7 @@ export function TopBar() {
         <p>{getCurrentDateInFrench()}</p>
         <div className="flex items-center gap-3">
           <Link
-            href="https://facebook.com"
+            href="https://www.facebook.com/QorisportsBenin/"
             aria-label="Facebook"
             target="_blank"
             rel="noreferrer"
