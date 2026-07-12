@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Moon, Search, Sun } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { navItems } from "@/components/layout/navigation";
 import { SearchModal } from "@/components/ui/SearchModal";
@@ -16,44 +16,13 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  // Logique de scroll avec zone morte de 20px pour eviter les oscillations.
-  const [showTopBar, setShowTopBar] = useState(true);
+  // Ombre discrete une fois la page scrollee.
   const [hasShadow, setHasShadow] = useState(false);
-  const anchorY = useRef(0);
-  const directionRef = useRef<"up" | "down" | null>(null);
 
   useEffect(() => {
     function handleScroll() {
-      const y = window.scrollY;
-
-      setHasShadow(y > 8);
-
-      // En haut de page : toujours afficher le niveau 1.
-      if (y <= 120) {
-        setShowTopBar(true);
-        anchorY.current = y;
-        directionRef.current = null;
-        return;
-      }
-
-      const delta = y - anchorY.current;
-
-      // Zone morte : ignorer les micro-scrolls de moins de 20px.
-      if (Math.abs(delta) < 20) return;
-
-      if (delta > 0 && directionRef.current !== "down") {
-        // Changement de direction vers le bas : masquer.
-        directionRef.current = "down";
-        setShowTopBar(false);
-        anchorY.current = y;
-      } else if (delta < 0 && directionRef.current !== "up") {
-        // Changement de direction vers le haut : afficher.
-        directionRef.current = "up";
-        setShowTopBar(true);
-        anchorY.current = y;
-      }
+      setHasShadow(window.scrollY > 8);
     }
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -65,17 +34,15 @@ export function Navbar() {
 
   return (
     <>
+      {/* Astuce top negatif : la barre logo (64px) defile naturellement,
+          le menu de navigation reste colle en haut. Aucune animation de
+          hauteur = aucun tremblement. */}
       <div
-        className={`sticky top-0 z-50 transition-shadow duration-300 ${
+        className={`sticky top-[-64px] z-50 transition-shadow duration-300 ${
           hasShadow ? "shadow-md" : ""
         }`}
       >
-        {/* Niveau 1 — Barre principale, se replie au scroll vers le bas */}
-        <div
-          className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${
-            showTopBar ? "max-h-16" : "max-h-0"
-          }`}
-        >
+        {/* Niveau 1 — Barre principale (defile avec la page) */}
         <header className="h-16 border-b border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900">
           <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
             {/* Logo */}
@@ -146,9 +113,8 @@ export function Navbar() {
             </div>
           </div>
         </header>
-        </div>
 
-        {/* Niveau 2 — Barre de navigation sombre */}
+        {/* Niveau 2 — Barre de navigation sombre (reste collee en haut) */}
         <nav className="hidden bg-primary lg:block">
           <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4">
             {navItems.map((item, i) => {
