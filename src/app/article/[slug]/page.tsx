@@ -9,7 +9,11 @@ import { ReadingProgress } from "@/components/articles/ReadingProgress";
 import { ViewTracker } from "@/components/articles/ViewTracker";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
-import { getArticleBySlug, getArticlesByCategory } from "@/lib/api";
+import {
+  getArticleBySlug,
+  getArticlesByCategory,
+  getLatestArticles,
+} from "@/lib/api";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -39,11 +43,19 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
-  const { articles: categoryArticles } = await getArticlesByCategory(
-    article.category.slug,
-  );
+  const [{ articles: categoryArticles }, latest] = await Promise.all([
+    getArticlesByCategory(article.category.slug),
+    getLatestArticles(20),
+  ]);
   const related = categoryArticles
     .filter((a) => a.id !== article.id)
+    .slice(0, 3);
+
+  // Suggestions d'AUTRES categories (les plus recents, hors categorie actuelle)
+  const discover = latest
+    .filter(
+      (a) => a.id !== article.id && a.category.slug !== article.category.slug,
+    )
     .slice(0, 3);
 
   return (
@@ -114,6 +126,20 @@ export default async function ArticlePage({ params }: PageProps) {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {related.map((a, i) => (
+              <ArticleCard key={a.id} article={a} variant="large" index={i} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {discover.length > 0 && (
+        <div className="mx-auto max-w-7xl px-4 pt-12">
+          <h2 className="mb-6 text-xl font-display font-bold text-text-primary md:text-2xl dark:text-gray-100">
+            À découvrir aussi
+          </h2>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {discover.map((a, i) => (
               <ArticleCard key={a.id} article={a} variant="large" index={i} />
             ))}
           </div>
