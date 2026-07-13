@@ -40,9 +40,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <Image
                     src="/logo.png"
                     alt="Qorisports"
-                    width={130}
-                    height={36}
-                    className="h-8 w-auto brightness-110 contrast-110"
+                    width={110}
+                    height={40}
+                    className="h-10 w-auto brightness-110 contrast-110"
                   />
                 </Link>
                 <button

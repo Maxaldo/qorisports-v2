@@ -20,9 +20,9 @@ export default function Footer() {
             <Image
               src="/logo.png"
               alt="Qorisports"
-              width={160}
-              height={44}
-              className="h-10 w-auto brightness-110 contrast-110"
+              width={132}
+              height={48}
+              className="h-12 w-auto brightness-110 contrast-110"
             />
             <p className="mt-3 text-sm text-white/85">
               La reference de l&apos;actualite sportive beninoise et africaine
