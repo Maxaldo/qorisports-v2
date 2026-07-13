@@ -38,21 +38,21 @@ export function Navbar() {
           le menu de navigation reste colle en haut. Aucune animation de
           hauteur = aucun tremblement. */}
       <div
-        className={`sticky top-[-96px] z-50 transition-shadow duration-300 ${
+        className={`sticky top-[-64px] z-50 transition-shadow duration-300 ${
           hasShadow ? "shadow-md" : ""
         }`}
       >
         {/* Niveau 1 — Barre principale (defile avec la page) */}
-        <header className="h-24 border-b border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900">
+        <header className="h-16 border-b border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900">
           <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-4">
             {/* Logo */}
             <Link href="/">
               <Image
                 src="/logo.png"
                 alt="Qorisports"
-                width={220}
-                height={80}
-                className="h-20 w-auto"
+                width={280}
+                height={64}
+                className="h-25 w-auto dark:brightness-110 dark:contrast-110"
                 priority
               />
             </Link>
