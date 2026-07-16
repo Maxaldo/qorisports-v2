@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import {
   getActiveAd,
   getArticlesByCategory,
-  getCategories,
   getFeaturedArticles,
   getLatestArticles,
 } from "@/lib/api";
 import {
-  getLastUpdate,
   getRecentResults,
   getStandings,
   getUpcomingFixtures,
@@ -37,11 +35,11 @@ const HOME_CATEGORY_SLUGS = [
 ];
 
 export default async function Home() {
-  const [featured, latest, categories, ad] = await Promise.all([
+  const [featured, latest, ad, adBottom] = await Promise.all([
     getFeaturedArticles(),
     getLatestArticles(20),
-    getCategories(),
     getActiveAd("sidebar"),
+    getActiveAd("home_bottom"),
   ]);
 
   const trending = latest.slice(0, 5);
@@ -50,13 +48,11 @@ export default async function Home() {
     HOME_CATEGORY_SLUGS.map((slug) => getArticlesByCategory(slug, 1, 4)),
   );
 
-  const [standings, upcomingMatches, recentResults, lastUpdate] =
-    await Promise.all([
-      getStandings(),
-      getUpcomingFixtures(),
-      getRecentResults(),
-      getLastUpdate(),
-    ]);
+  const [standings, upcomingMatches, recentResults] = await Promise.all([
+    getStandings(),
+    getUpcomingFixtures(),
+    getRecentResults(),
+  ]);
 
   return (
     <div className="bg-surface dark:bg-gray-950">
@@ -84,12 +80,11 @@ export default async function Home() {
           <aside className="lg:col-span-4">
             <Sidebar
               articles={latest}
-              categories={categories}
               standings={standings}
               upcomingMatches={upcomingMatches}
               recentResults={recentResults}
-              lastUpdate={lastUpdate}
               ad={ad}
+              adBottom={adBottom}
             />
           </aside>
         </div>

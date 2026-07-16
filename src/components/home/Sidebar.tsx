@@ -5,7 +5,6 @@ import {
   BarChart3,
   Calendar,
   Eye,
-  FolderOpen,
   Megaphone,
   Star,
   Trophy,
@@ -21,17 +20,46 @@ import {
 import { StandingsTable } from "@/components/standings/StandingsTable";
 import { UpcomingMatches } from "@/components/matches/UpcomingMatches";
 import { RecentResults } from "@/components/matches/RecentResults";
-import type { Article, Category, Match } from "@/lib/types";
+import type { Article, Match } from "@/lib/types";
 import type { Standing } from "@/data/mock-standings";
 
 interface SidebarProps {
   articles: Article[];
-  categories: Category[];
   standings: Standing[];
   upcomingMatches: Match[];
   recentResults: Match[];
-  lastUpdate?: string | null;
   ad?: Ad | null;
+  // Seconde banniere, affichee en bas de la sidebar (slot "home_bottom").
+  adBottom?: Ad | null;
+}
+
+// Contenu d'un bloc publicitaire (banniere cliquable ou placeholder).
+function AdContent({ ad }: { ad?: Ad | null }) {
+  if (!ad) {
+    return (
+      <div className="flex h-48 items-center justify-center">
+        <span className="text-xs font-medium uppercase tracking-wider text-text-secondary dark:text-gray-500">
+          Espace publicitaire
+        </span>
+      </div>
+    );
+  }
+  return (
+    <a
+      href={ad.link_url || "#"}
+      target={ad.link_url ? "_blank" : undefined}
+      rel="noopener noreferrer sponsored"
+      onClick={() => incrementAdClicks(ad.id)}
+      className="block"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={ad.image_url}
+        alt={ad.name}
+        className="h-auto w-full object-cover"
+      />
+    </a>
+  );
 }
 
 // Conteneur generique pour chaque widget de la sidebar.
@@ -70,12 +98,11 @@ function SidebarWidget({
 // Categories, Pub placeholder.
 export function Sidebar({
   articles,
-  categories,
   standings,
   upcomingMatches,
   recentResults,
-  lastUpdate,
   ad,
+  adBottom,
 }: SidebarProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -83,7 +110,8 @@ export function Sidebar({
   // Compte une impression publicitaire par affichage de la page
   useEffect(() => {
     if (ad) incrementAdImpressions(ad.id);
-  }, [ad]);
+    if (adBottom) incrementAdImpressions(adBottom.id);
+  }, [ad, adBottom]);
 
   const popular = useMemo(
     () => [...articles].sort((a, b) => b.views - a.views).slice(0, 5),
@@ -99,28 +127,7 @@ export function Sidebar({
         delay={0}
         inView={inView}
       >
-        {ad ? (
-          <a
-            href={ad.link_url || "#"}
-            target={ad.link_url ? "_blank" : undefined}
-            rel="noopener noreferrer sponsored"
-            onClick={() => incrementAdClicks(ad.id)}
-            className="block"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={ad.image_url}
-              alt={ad.name}
-              className="h-auto w-full object-cover"
-            />
-          </a>
-        ) : (
-          <div className="flex h-48 items-center justify-center">
-            <span className="text-xs font-medium uppercase tracking-wider text-text-secondary dark:text-gray-500">
-              Espace publicitaire
-            </span>
-          </div>
-        )}
+        <AdContent ad={ad} />
       </SidebarWidget>
 
       {/* 2. Matchs a venir (max 3) */}
@@ -198,51 +205,15 @@ export function Sidebar({
         </div>
       </SidebarWidget>
 
-      {/* 5. Categories (max 8) */}
+      {/* 6. Seconde banniere publicitaire (slot "home_bottom") */}
       <SidebarWidget
-        icon={<FolderOpen className="h-4 w-4 text-blue-500" />}
-        title="Categories"
+        icon={<Megaphone className="h-4 w-4 text-red-500" />}
+        title="Publicite"
         delay={0.2}
         inView={inView}
       >
-        <ul className="px-2 py-2 space-y-0.5">
-          {categories.slice(0, 8).map((cat) => (
-            <li key={cat.id}>
-              <Link
-                href={`/categorie/${cat.slug}`}
-                className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs text-text-primary transition-colors hover:bg-gray-50 hover:text-accent dark:text-gray-300 dark:hover:bg-gray-800"
-              >
-                <span className="flex items-center gap-2">
-                  <span
-                    className="inline-block h-2 w-2 shrink-0 rounded-full"
-                    style={{ backgroundColor: cat.color }}
-                  />
-                  <span className="line-clamp-1">{cat.name}</span>
-                </span>
-                {(cat.count ?? 0) > 0 && (
-                  <span className="ml-2 shrink-0 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                    {cat.count}
-                  </span>
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <AdContent ad={adBottom} />
       </SidebarWidget>
-
-      {/* Date de derniere mise a jour */}
-      {lastUpdate && (
-        <p className="text-center text-[10px] text-text-secondary dark:text-gray-500">
-          Donnees MAJ :{" "}
-          {new Date(lastUpdate).toLocaleDateString("fr-FR", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </p>
-      )}
 
     </div>
   );
