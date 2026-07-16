@@ -9,6 +9,7 @@ import { ReadingProgress } from "@/components/articles/ReadingProgress";
 import { ViewTracker } from "@/components/articles/ViewTracker";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
+import { WhatsAppCta } from "@/components/whatsapp/WhatsAppCta";
 import {
   getArticleBySlug,
   getArticlesByCategory,
@@ -114,6 +115,8 @@ export default async function ArticlePage({ params }: PageProps) {
             title={article.title}
           />
         </div>
+
+        <WhatsAppCta />
 
         <hr className="mt-10 border-gray-200 dark:border-gray-800" />
       </div>

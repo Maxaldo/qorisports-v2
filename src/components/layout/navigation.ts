@@ -9,6 +9,7 @@ export const navItems: NavItem[] = [
   { label: "Football", href: "/categorie/football", color: "#16A34A" },
   { label: "Basketball", href: "/categorie/basketball", color: "#EA580C" },
   { label: "Handball", href: "/categorie/handball", color: "#2563EB" },
+  { label: "Volleyball", href: "/categorie/volleyball", color: "#0891B2" },
   { label: "Athletisme", href: "/categorie/athletisme", color: "#DC2626" },
   { label: "Autres", href: "/categorie/autres", color: "#7C3AED" },
   { label: "Matchs", href: "/matchs", color: "#16A34A" },

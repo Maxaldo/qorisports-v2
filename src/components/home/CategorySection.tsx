@@ -28,7 +28,8 @@ export function CategorySection({
   if (articles.length === 0) return null;
 
   const mainArticle = articles[0];
-  const secondaryArticles = articles.slice(1, 3);
+  // 3 petits articles a cote du grand (4 au total).
+  const secondaryArticles = articles.slice(1, 4);
   const linkSlug = categorySlug ?? mainArticle.category.slug;
 
   return (

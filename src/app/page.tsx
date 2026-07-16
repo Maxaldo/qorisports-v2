@@ -27,7 +27,14 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 // Categories mises en avant sur l'accueil, par ordre d'affichage.
-const HOME_CATEGORY_SLUGS = ["actualites", "can-2025", "football", "autres"];
+const HOME_CATEGORY_SLUGS = [
+  "football",
+  "basketball",
+  "handball",
+  "volleyball",
+  "athletisme",
+  "autres",
+];
 
 export default async function Home() {
   const [featured, latest, categories, ad] = await Promise.all([

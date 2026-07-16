@@ -5,6 +5,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { TopBar } from "@/components/layout/TopBar";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { WhatsAppFloatButton } from "@/components/whatsapp/WhatsAppFloatButton";
+import { WhatsAppPopup } from "@/components/whatsapp/WhatsAppPopup";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -60,6 +62,8 @@ export default function RootLayout({
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
+        <WhatsAppFloatButton />
+        <WhatsAppPopup />
         <ScrollToTop />
       </body>
     </html>

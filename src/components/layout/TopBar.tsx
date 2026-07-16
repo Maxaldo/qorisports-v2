@@ -2,9 +2,11 @@ import Link from "next/link";
 import {
   FacebookIcon,
   InstagramIcon,
+  WhatsAppIcon,
   XIcon,
   YouTubeIcon,
 } from "@/components/ui/SocialIcons";
+import { WHATSAPP_CHANNEL_URL } from "@/lib/site-config";
 
 function getCurrentDateInFrench(): string {
   const formattedDate = new Date().toLocaleDateString("fr-FR", {
@@ -24,6 +26,16 @@ export function TopBar() {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4">
         <p>{getCurrentDateInFrench()}</p>
         <div className="flex items-center gap-3">
+          <a
+            href={WHATSAPP_CHANNEL_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1.5 rounded-full bg-[#25D366] px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-90"
+          >
+            <WhatsAppIcon className="h-3.5 w-3.5" />
+            Rejoindre la chaîne
+          </a>
+          <span className="h-4 w-px bg-white/30" aria-hidden="true" />
           <Link
             href="https://www.facebook.com/QorisportsBenin/"
             aria-label="Facebook"
