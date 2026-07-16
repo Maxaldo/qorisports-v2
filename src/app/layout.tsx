@@ -25,6 +25,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "./",
   },
+  // Validation Google Search Console
+  verification: {
+    google: "mJlHQslExksEDIcElTuha3yJ8vTSttARtQeGnMYzam4",
+  },
   title: {
     default: "Qorisports — La reference de l'actualite sportive",
     template: "%s | Qorisports",
