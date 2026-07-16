@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://qorisports.com/sitemap.xml",
+    sitemap: "https://www.qorisports.com/sitemap.xml",
   };
 }

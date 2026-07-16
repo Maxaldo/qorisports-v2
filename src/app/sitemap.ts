@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
 import { getArticles, getCategories } from "@/lib/api";
 
-const BASE_URL = "https://qorisports.com";
+const BASE_URL = "https://www.qorisports.com";
 
-// Sitemap XML genere dynamiquement depuis l'API WordPress.
+// Sitemap XML genere dynamiquement depuis Supabase.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ articles }, categories] = await Promise.all([
-    getArticles(1, 100),
+    getArticles(1, 1000),
     getCategories(),
   ]);
 

@@ -20,6 +20,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  // Domaine canonique : sert de base aux URLs Open Graph, canonical, etc.
+  metadataBase: new URL("https://www.qorisports.com"),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: "Qorisports — La reference de l'actualite sportive",
     template: "%s | Qorisports",
