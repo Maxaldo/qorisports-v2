@@ -59,8 +59,39 @@ export default async function ArticlePage({ params }: PageProps) {
     )
     .slice(0, 3);
 
+  // Donnees structurees Schema.org : aident Google a comprendre l'article
+  // (resultats enrichis, Google Actualites, Discover).
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.excerpt,
+    image: [article.coverImage],
+    datePublished: article.publishedAt,
+    author: [{ "@type": "Person", name: article.author.name }],
+    publisher: {
+      "@type": "Organization",
+      name: "Qorisports",
+      url: "https://www.qorisports.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.qorisports.com/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://www.qorisports.com/article/${article.slug}`,
+    },
+    articleSection: article.category.name,
+    inLanguage: "fr",
+  };
+
   return (
     <div className="bg-surface pb-16 dark:bg-gray-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ViewTracker slug={article.slug} />
       <ReadingProgress />
 
