@@ -56,6 +56,17 @@ interface DbArticle {
 const ARTICLE_SELECT =
   "id, title, slug, excerpt, content, cover_image_url, featured, tags, views, published_at, created_at, category:categories(*), author:profiles(*)";
 
+// Libelle affiche sur le badge d'un article.
+// Un article range dans "Autres" affiche sa vraie discipline (son premier
+// tag, ex. "Petanque", "Roller"...) tout en restant dans la categorie Autres.
+export function getBadgeLabel(article: Article): string {
+  if (article.category.slug === "autres" && article.tags.length > 0) {
+    const tag = (article.tags[0] ?? "").trim();
+    if (tag) return tag.charAt(0).toUpperCase() + tag.slice(1);
+  }
+  return article.category.name;
+}
+
 function countWords(html: string): number {
   const text = html.replace(/<[^>]*>/g, "").trim();
   if (!text) return 0;

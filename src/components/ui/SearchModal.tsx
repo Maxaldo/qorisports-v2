@@ -5,7 +5,7 @@ import { Loader2, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { formatDate, searchArticles } from "@/lib/api";
+import { formatDate, getBadgeLabel, searchArticles } from "@/lib/api";
 import { Badge } from "@/components/ui/Badge";
 import type { Article } from "@/lib/types";
 
@@ -137,7 +137,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             </h4>
                             <div className="mt-1 flex items-center gap-2">
                               <Badge
-                                label={article.category.name}
+                                label={getBadgeLabel(article)}
                                 color={article.category.color}
                               />
                               <span className="text-xs text-text-secondary dark:text-gray-400">

@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { formatDate } from "@/lib/api";
+import { formatDate, getBadgeLabel } from "@/lib/api";
 import type { Article } from "@/lib/types";
 
 interface HeroSliderProps {
@@ -70,7 +70,7 @@ export function HeroSlider({ articles }: HeroSliderProps) {
                 className="mb-4 inline-block rounded px-3 py-1 text-xs font-bold uppercase text-white"
                 style={{ backgroundColor: article.category.color }}
               >
-                {article.category.name}
+                {getBadgeLabel(article)}
               </motion.span>
 
               <motion.div

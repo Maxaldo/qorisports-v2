@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { formatDate } from "@/lib/api";
+import { formatDate, getBadgeLabel } from "@/lib/api";
 import type { Article } from "@/lib/types";
 
 interface LatestNewsProps {
@@ -26,7 +26,7 @@ function MainArticle({ article }: { article: Article }) {
             className="absolute left-3 top-3 rounded px-2.5 py-1 text-xs font-bold uppercase text-white"
             style={{ backgroundColor: article.category.color }}
           >
-            {article.category.name}
+            {getBadgeLabel(article)}
           </span>
         </div>
       </Link>
@@ -71,7 +71,7 @@ function CompactArticle({ article }: { article: Article }) {
           className="mb-1 text-[10px] font-bold uppercase"
           style={{ color: article.category.color }}
         >
-          {article.category.name}
+          {getBadgeLabel(article)}
         </span>
         <Link href={`/article/${article.slug}`}>
           <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent dark:text-gray-100">

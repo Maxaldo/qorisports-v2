@@ -5,7 +5,7 @@ import { Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { formatDate, formatViews } from "@/lib/api";
+import { formatDate, formatViews, getBadgeLabel } from "@/lib/api";
 import type { Article } from "@/lib/types";
 import { Badge } from "@/components/ui/Badge";
 
@@ -60,7 +60,7 @@ function LargeCard({ article }: { article: Article }) {
           className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
         />
         <div className="absolute left-3 top-3">
-          <Badge label={article.category.name} color={article.category.color} />
+          <Badge label={getBadgeLabel(article)} color={article.category.color} />
         </div>
       </div>
 
@@ -133,7 +133,7 @@ function HorizontalCard({ article }: { article: Article }) {
       </div>
 
       <div className="flex w-2/3 flex-col justify-center p-4">
-        <Badge label={article.category.name} color={article.category.color} />
+        <Badge label={getBadgeLabel(article)} color={article.category.color} />
         <h3 className="mt-2 text-base font-display font-bold leading-tight text-text-primary transition-colors duration-300 group-hover:text-accent md:text-lg dark:text-gray-100">
           {article.title}
         </h3>

@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef } from "react";
 import {
   formatViews,
+  getBadgeLabel,
   incrementAdClicks,
   incrementAdImpressions,
   type Ad,
@@ -192,7 +193,7 @@ export function Sidebar({
                     className="text-[10px] font-bold uppercase"
                     style={{ color: article.category.color }}
                   >
-                    {article.category.name}
+                    {getBadgeLabel(article)}
                   </span>
                   <span className="flex items-center gap-0.5 text-[10px] text-text-secondary dark:text-gray-500">
                     <Eye className="h-3 w-3" />

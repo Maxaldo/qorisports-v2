@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/Badge";
 import { WhatsAppCta } from "@/components/whatsapp/WhatsAppCta";
 import {
   getArticleBySlug,
+  getBadgeLabel,
   getArticlesByCategory,
   getLatestArticles,
 } from "@/lib/api";
@@ -113,7 +114,7 @@ export default async function ArticlePage({ params }: PageProps) {
           </span>
         </nav>
 
-        <Badge label={article.category.name} color={article.category.color} />
+        <Badge label={getBadgeLabel(article)} color={article.category.color} />
 
         <h1 className="mt-4 text-3xl font-display font-bold leading-tight text-text-primary md:text-4xl dark:text-gray-100">
           {article.title}

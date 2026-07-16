@@ -3,15 +3,12 @@ interface BadgeProps {
   color: string;
 }
 
-// Badge colore pour les categories (texte de la couleur, fond a 10% d'opacite).
+// Badge categorie : texte colore sur fond blanc, lisible sur les photos.
 export function Badge({ label, color }: BadgeProps) {
   return (
     <span
-      className="inline-block rounded px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide"
-      style={{
-        color,
-        backgroundColor: `${color}1a`,
-      }}
+      className="inline-block rounded bg-white px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide shadow-sm"
+      style={{ color }}
     >
       {label}
     </span>
