@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   FacebookIcon,
   InstagramIcon,
-  WhatsAppIcon,
   XIcon,
   YouTubeIcon,
 } from "@/components/ui/SocialIcons";
@@ -30,9 +29,16 @@ export function TopBar() {
             href={WHATSAPP_CHANNEL_URL}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-1.5 rounded-full bg-[#25D366] px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-90"
+            className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#1FBE5A] to-[#25D366] py-0.5 pl-0.5 pr-3 text-xs font-bold text-white shadow-sm transition-transform hover:scale-105"
           >
-            <WhatsAppIcon className="h-3.5 w-3.5" />
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://cdn.simpleicons.org/whatsapp/25D366"
+                alt=""
+                className="h-3.5 w-3.5"
+              />
+            </span>
             Rejoindre la chaîne
           </a>
           <span className="h-4 w-px bg-white/30" aria-hidden="true" />
