@@ -5,6 +5,7 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import Link from "next/link";
 import { navItems } from "@/components/layout/navigation";
+import { CategoryIcon } from "@/components/layout/CategoryIcon";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -66,14 +67,17 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="flex items-center gap-3 text-2xl font-semibold"
+                      className="flex items-center gap-4 text-xl font-semibold"
                     >
-                      {item.color ? (
-                        <span
-                          className="inline-block h-3 w-3 rounded-full"
-                          style={{ backgroundColor: item.color }}
-                        />
-                      ) : null}
+                      <span
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                        style={{
+                          backgroundColor: `${item.color ?? "#94A3B8"}22`,
+                          color: item.color ?? "#E2E8F0",
+                        }}
+                      >
+                        <CategoryIcon label={item.label} className="h-5 w-5" />
+                      </span>
                       {item.label}
                     </Link>
                   </motion.div>
