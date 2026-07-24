@@ -8,6 +8,7 @@ import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { WhatsAppFloatButton } from "@/components/whatsapp/WhatsAppFloatButton";
 import { WhatsAppPopup } from "@/components/whatsapp/WhatsAppPopup";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -121,6 +122,7 @@ export default function RootLayout({
         <WhatsAppPopup />
         <ScrollToTop />
         <ServiceWorkerRegister />
+        <InstallPrompt />
       </body>
     </html>
   );

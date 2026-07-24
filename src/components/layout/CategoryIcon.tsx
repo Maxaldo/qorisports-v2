@@ -6,7 +6,7 @@ import {
   Shapes,
   Volleyball,
 } from "lucide-react";
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentType, CSSProperties, SVGProps } from "react";
 
 // Icone par categorie pour le menu mobile.
 // lucide n'a pas de ballon de foot/basket/handball : on les dessine en SVG
@@ -52,7 +52,10 @@ function HandballIcon(props: IconProps) {
   );
 }
 
-type IconComp = ComponentType<{ className?: string }>;
+type IconComp = ComponentType<{
+  className?: string;
+  style?: CSSProperties;
+}>;
 
 const MAP: Record<string, IconComp> = {
   accueil: Home,
@@ -68,13 +71,15 @@ const MAP: Record<string, IconComp> = {
 export function CategoryIcon({
   label,
   className,
+  style,
 }: {
   label: string;
   className?: string;
+  style?: CSSProperties;
 }) {
   const key = label.toLowerCase();
   const Icon: IconComp = key.includes("parieur")
     ? Coins
     : MAP[key] ?? Shapes;
-  return <Icon className={className} />;
+  return <Icon className={className} style={style} />;
 }

@@ -10,7 +10,9 @@ import { ViewTracker } from "@/components/articles/ViewTracker";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
 import { WhatsAppCta } from "@/components/whatsapp/WhatsAppCta";
+import { ArticleAd } from "@/components/articles/ArticleAd";
 import {
+  getActiveAd,
   getArticleBySlug,
   getBadgeLabel,
   getArticlesByCategory,
@@ -45,9 +47,10 @@ export default async function ArticlePage({ params }: PageProps) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
-  const [{ articles: categoryArticles }, latest] = await Promise.all([
+  const [{ articles: categoryArticles }, latest, articleAd] = await Promise.all([
     getArticlesByCategory(article.category.slug),
     getLatestArticles(20),
+    getActiveAd("article"),
   ]);
   const related = categoryArticles
     .filter((a) => a.id !== article.id)
@@ -140,6 +143,8 @@ export default async function ArticlePage({ params }: PageProps) {
         </div>
 
         <ArticleContent html={article.content} />
+
+        <ArticleAd ad={articleAd} />
 
         <div className="mt-10">
           <ShareButtons
