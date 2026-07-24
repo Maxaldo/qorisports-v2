@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Footer from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
@@ -7,6 +7,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { WhatsAppFloatButton } from "@/components/whatsapp/WhatsAppFloatButton";
 import { WhatsAppPopup } from "@/components/whatsapp/WhatsAppPopup";
+import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon.png", type: "image/png", sizes: "512x512" },
     ],
-    apple: [{ url: "/favicon.png", type: "image/png", sizes: "180x180" }],
+    apple: [{ url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" }],
   },
   openGraph: {
     type: "website",
@@ -51,6 +52,47 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  // PWA : nom affiche une fois installe + icone Apple
+  applicationName: "Qorisports",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Qorisports",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F172A",
+};
+
+// Donnees structurees globales : identite du site (logo + nom) pour Google.
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.qorisports.com/#organization",
+      name: "Qorisports",
+      alternateName: "QoriSport",
+      url: "https://www.qorisports.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.qorisports.com/favicon.png",
+        width: 512,
+        height: 512,
+      },
+      sameAs: ["https://www.facebook.com/QorisportsBenin/"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.qorisports.com/#website",
+      name: "Qorisports",
+      alternateName: "QoriSport",
+      url: "https://www.qorisports.com",
+      publisher: { "@id": "https://www.qorisports.com/#organization" },
+      inLanguage: "fr",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -65,6 +107,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen font-body bg-surface text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
         <TopBar />
         <Navbar />
         <main className="min-h-screen">
@@ -74,6 +120,7 @@ export default function RootLayout({
         <WhatsAppFloatButton />
         <WhatsAppPopup />
         <ScrollToTop />
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
