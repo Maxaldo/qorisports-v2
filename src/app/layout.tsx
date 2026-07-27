@@ -31,6 +31,19 @@ export const metadata: Metadata = {
   verification: {
     google: "mJlHQslExksEDIcElTuha3yJ8vTSttARtQeGnMYzam4",
   },
+  // Grandes images autorisees dans les resultats : condition indispensable
+  // pour etre eligible a Google Discover et Google Actualites.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   title: {
     default: "Qorisports — La reference de l'actualite sportive",
     template: "%s | Qorisports",
