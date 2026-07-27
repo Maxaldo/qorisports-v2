@@ -31,13 +31,25 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) return { title: "Article non trouve" };
+  const url = `https://www.qorisports.com/article/${article.slug}`;
   return {
     title: article.title,
     description: article.excerpt,
+    alternates: { canonical: url },
     openGraph: {
+      type: "article",
+      url,
       title: article.title,
       description: article.excerpt,
+      publishedTime: article.publishedAt,
+      authors: [article.author.name],
       images: [{ url: article.coverImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [article.coverImage],
     },
   };
 }

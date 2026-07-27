@@ -17,9 +17,16 @@ import { Sidebar } from "@/components/home/Sidebar";
 import { TrendingBar } from "@/components/home/TrendingBar";
 
 export const metadata: Metadata = {
-  title: "Accueil",
+  // Titre complet sur l'accueil (c'est la page que Google affiche pour la marque)
+  title: {
+    absolute: "Qorisports — Actualité sportive béninoise et africaine",
+  },
   description:
     "Qorisports : toute l'actualite sportive beninoise et africaine en direct.",
+  // Canonical explicite : sans cela Next genere "/index" sur la racine.
+  alternates: {
+    canonical: "https://www.qorisports.com/",
+  },
 };
 
 export const revalidate = 60;
