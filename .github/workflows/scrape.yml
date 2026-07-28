@@ -2,8 +2,11 @@ name: Scraping Ligue 1 Benin
 
 on:
   schedule:
-    # Toutes les heures (minute 0). Heure UTC.
-    - cron: "0 * * * *"
+    # Toutes les 6 heures (00h, 06h, 12h, 18h UTC).
+    # Chaque commit du scraper declenche un deploiement Vercel qui invalide
+    # tout le cache : espacer les passages reduit fortement les ecritures ISR.
+    # Un classement de Ligue 1 ne change pas toutes les heures.
+    - cron: "0 */6 * * *"
   workflow_dispatch: {} # permet aussi un lancement manuel depuis l'onglet Actions
 
 permissions:

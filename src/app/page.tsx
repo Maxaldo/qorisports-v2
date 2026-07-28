@@ -29,7 +29,9 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+// 30 min : le dashboard declenche deja une revalidation immediate a chaque
+// publication (/api/revalidate), inutile de regenerer toutes les minutes.
+export const revalidate = 1800;
 
 // Categories mises en avant sur l'accueil, par ordre d'affichage.
 const HOME_CATEGORY_SLUGS = [

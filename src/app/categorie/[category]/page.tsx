@@ -7,7 +7,7 @@ interface PageProps {
   params: Promise<{ category: string }>;
 }
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const categories = await getCategories();

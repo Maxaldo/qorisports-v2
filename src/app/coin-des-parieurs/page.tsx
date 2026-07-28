@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Analyses, pronostics et conseils pour parier malin sur le sport beninois et africain.",
 };
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 // Donnees mock des pronostics du jour.
 const pronostics = [

@@ -23,7 +23,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 60;
+// 24 h : un article publie ne change quasiment plus. Les modifications sont
+// poussees immediatement par le dashboard via /api/revalidate.
+export const revalidate = 86400;
 
 export async function generateMetadata({
   params,
