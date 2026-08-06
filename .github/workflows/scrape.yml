@@ -10,7 +10,7 @@ on:
   workflow_dispatch: {} # permet aussi un lancement manuel depuis l'onglet Actions
 
 permissions:
-  contents: write # autorise le commit des donnees mises a jour
+  contents: read # plus de commit : la synchro se fait dans Supabase
 
 jobs:
   scrape:
@@ -36,21 +36,11 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
-      - name: Commit des donnees si elles ont change
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/*.json
-          if git diff --staged --quiet; then
-            echo "Aucune donnee modifiee, rien a committer."
-          else
-            git commit -m "chore: mise a jour automatique des donnees Ligue 1"
-            # Recupere d'abord les eventuels changements distants (ex: push
-            # manuel de Max) puis pousse ; reessaie jusqu'a 5 fois en cas de
-            # course avec un autre push.
-            for i in 1 2 3 4 5; do
-              git pull --rebase --autostash origin main && git push && break
-              echo "Push refuse (tentative $i), nouvel essai..."
-              sleep 5
-            done
-          fi
+      # IMPORTANT : on ne commite plus les fichiers JSON.
+      # Le scraper synchronise deja les donnees dans Supabase, et le site lit
+      # Supabase en priorite (les JSON du depot ne servent que de secours).
+      # Chaque commit declenchait un deploiement Vercel qui vidait tout le
+      # cache ISR et forcait la regeneration de toutes les pages : c'etait la
+      # principale source de consommation du quota.
+      - name: Resultat
+        run: echo "Donnees synchronisees dans Supabase. Aucun commit necessaire."
