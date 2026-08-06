@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+
+// 6 h : cale sur la frequence du scraper.
+export const revalidate = 21600;
 import { getLastUpdate, getStandings } from "@/lib/data";
 import { season } from "@/data/mock-standings";
 import { StandingsTable } from "@/components/standings/StandingsTable";

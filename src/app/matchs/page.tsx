@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+
+// 6 h : cale sur la frequence du scraper. Sans cette ligne la page etait figee
+// a la date du dernier deploiement.
+export const revalidate = 21600;
 import { getLastUpdate, getRecentResults, getUpcomingFixtures } from "@/lib/data";
 import type { Match } from "@/lib/types";
 import { TeamLogo } from "@/components/ui/TeamLogo";
