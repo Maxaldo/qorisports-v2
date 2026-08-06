@@ -28,20 +28,11 @@ const nextConfig: NextConfig = {
       { source: "/author/:path*", destination: "/", permanent: true },
       { source: "/:year(\\d{4})/:path*", destination: "/", permanent: true },
       { source: "/feed", destination: "/", permanent: true },
-      // Pages d'attachement WP : /mon-article/1-3/ -> /article/mon-article
-      {
-        source: "/:slug([a-z0-9-]+)/:sub(\\d+-\\d+)",
-        destination: "/article/:slug",
-        permanent: true,
-      },
-      // Permaliens WP /%postname%/ : /mon-article -> /article/mon-article
-      // (exclut les vraies pages du site et les fichiers)
-      {
-        source:
-          "/:slug((?!article$|categorie$|matchs$|classement$|coin-des-parieurs$|a-propos$|api$|category$|wp-admin$|wp-login|wp-content$)[a-z0-9]+(?:-[a-z0-9]+)+)",
-        destination: "/article/:slug",
-        permanent: true,
-      },
+      // NOTE : on ne redirige PLUS toutes les anciennes URLs WordPress
+      // (/mon-article -> /article/mon-article). Cette regle attrapait aussi
+      // les milliers d'URLs testees par les robots de scan, et chaque essai
+      // generait une page (et donc une ecriture ISR facturee).
+      // Les anciens liens WordPress renvoient desormais une 404 propre.
     ];
   },
   allowedDevOrigins: ["10.5.0.2", "192.168.1.178"],

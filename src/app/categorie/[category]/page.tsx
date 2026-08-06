@@ -9,6 +9,11 @@ interface PageProps {
 
 export const revalidate = 3600;
 
+// Seules les categories connues sont generees : une URL inconnue renvoie une
+// 404 immediate, sans creer de page en cache (evite les ecritures ISR
+// declenchees par les robots qui testent des URLs au hasard).
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const categories = await getCategories();
   return categories.map((cat) => ({ category: cat.slug }));

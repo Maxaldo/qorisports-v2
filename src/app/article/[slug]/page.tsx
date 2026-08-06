@@ -14,6 +14,7 @@ import { ArticleAd } from "@/components/articles/ArticleAd";
 import {
   getActiveAd,
   getArticleBySlug,
+  getArticles,
   getBadgeLabel,
   getArticlesByCategory,
   getLatestArticles,
@@ -26,6 +27,19 @@ interface PageProps {
 // 24 h : un article publie ne change quasiment plus. Les modifications sont
 // poussees immediatement par le dashboard via /api/revalidate.
 export const revalidate = 86400;
+
+// Tous les articles existants sont generes au build : les robots qui testent
+// des URLs au hasard ne declenchent plus la creation de pages en cache.
+// dynamicParams reste actif pour que les nouveaux articles publies depuis le
+// dashboard soient accessibles immediatement, sans redeploiement.
+export async function generateStaticParams() {
+  try {
+    const { articles } = await getArticles(1, 1000);
+    return articles.map((a) => ({ slug: a.slug }));
+  } catch {
+    return [];
+  }
+}
 
 export async function generateMetadata({
   params,

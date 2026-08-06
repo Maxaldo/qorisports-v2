@@ -3,6 +3,10 @@ import { getArticles, getCategories } from "@/lib/api";
 
 const BASE_URL = "https://www.qorisports.com";
 
+// Regenere au plus une fois par jour : Google explore le sitemap tres souvent,
+// sans cela chaque passage declenche une ecriture ISR.
+export const revalidate = 86400;
+
 // Sitemap XML genere dynamiquement depuis Supabase.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ articles }, categories] = await Promise.all([
