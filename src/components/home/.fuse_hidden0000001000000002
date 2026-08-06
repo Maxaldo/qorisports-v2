@@ -54,7 +54,7 @@ export function CategorySection({
           </h2>
         </div>
 
-        <Link prefetch={false}
+        <Link
           href={`/categorie/${linkSlug}`}
           className="text-sm font-medium transition-colors hover:text-accent"
           style={{ color: categoryColor }}
@@ -71,7 +71,7 @@ export function CategorySection({
           transition={{ duration: 0.5, delay: 0.2 }}
           className="group"
         >
-          <Link prefetch={false} href={`/article/${mainArticle.slug}`} className="block">
+          <Link href={`/article/${mainArticle.slug}`} className="block">
             <div className="relative aspect-video w-full overflow-hidden rounded-lg">
               <Image
                 src={mainArticle.coverImage}
@@ -82,7 +82,7 @@ export function CategorySection({
             </div>
           </Link>
 
-          <Link prefetch={false} href={`/article/${mainArticle.slug}`}>
+          <Link href={`/article/${mainArticle.slug}`}>
             <h3 className="mt-3 text-lg font-display font-bold leading-tight text-text-primary transition-colors duration-300 hover:text-accent dark:text-gray-100">
               {mainArticle.title}
             </h3>
@@ -104,7 +104,7 @@ export function CategorySection({
                 transition={{ duration: 0.4, delay: 0.4 + i * 0.15 }}
                 className="flex gap-4"
               >
-                <Link prefetch={false}
+                <Link
                   href={`/article/${article.slug}`}
                   className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg"
                 >
@@ -118,7 +118,7 @@ export function CategorySection({
                 </Link>
 
                 <div className="flex flex-col justify-center">
-                  <Link prefetch={false} href={`/article/${article.slug}`}>
+                  <Link href={`/article/${article.slug}`}>
                     <h4 className="text-sm font-semibold leading-snug text-text-primary line-clamp-2 transition-colors hover:text-accent dark:text-gray-100">
                       {article.title}
                     </h4>

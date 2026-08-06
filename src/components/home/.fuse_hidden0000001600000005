@@ -78,7 +78,7 @@ export function HeroSlider({ articles }: HeroSliderProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
               >
-                <Link prefetch={false} href={`/article/${article.slug}`}>
+                <Link href={`/article/${article.slug}`}>
                   <h2 className="max-w-3xl text-2xl font-display font-bold leading-tight text-white md:text-4xl lg:text-5xl">
                     {article.title}
                   </h2>

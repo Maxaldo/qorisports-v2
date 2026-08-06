@@ -27,7 +27,7 @@ export default function Footer() {
             <p className="mt-3 text-sm text-white/85">
               La reference de l&apos;actualite sportive beninoise et africaine
             </p>
-            <Link prefetch={false}
+            <Link
               href="/a-propos"
               className="mt-3 inline-block text-sm text-white/85 transition-opacity hover:opacity-80"
             >
@@ -40,7 +40,7 @@ export default function Footer() {
             <ul className="mt-3 space-y-2 text-sm">
               {categoryLinks.map((item) => (
                 <li key={item.href}>
-                  <Link prefetch={false} href={item.href} className="transition-opacity hover:opacity-80">
+                  <Link href={item.href} className="transition-opacity hover:opacity-80">
                     {item.label}
                   </Link>
                 </li>
@@ -51,7 +51,7 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold">Suivez-nous</h4>
             <div className="mt-3 flex items-center gap-3">
-              <Link prefetch={false}
+              <Link
                 href="https://www.facebook.com/QorisportsBenin/"
                 aria-label="Facebook"
                 target="_blank"
@@ -59,7 +59,7 @@ export default function Footer() {
               >
                 <FacebookIcon className="h-5 w-5 transition-opacity hover:opacity-80" />
               </Link>
-              <Link prefetch={false}
+              <Link
                 href="https://twitter.com"
                 aria-label="Twitter"
                 target="_blank"
@@ -67,7 +67,7 @@ export default function Footer() {
               >
                 <XIcon className="h-5 w-5 transition-opacity hover:opacity-80" />
               </Link>
-              <Link prefetch={false}
+              <Link
                 href="https://instagram.com"
                 aria-label="Instagram"
                 target="_blank"
@@ -75,7 +75,7 @@ export default function Footer() {
               >
                 <InstagramIcon className="h-5 w-5 transition-opacity hover:opacity-80" />
               </Link>
-              <Link prefetch={false}
+              <Link
                 href="https://youtube.com"
                 aria-label="Youtube"
                 target="_blank"

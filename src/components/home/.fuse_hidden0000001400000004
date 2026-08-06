@@ -22,7 +22,7 @@ export function TrendingBar({ articles }: TrendingBarProps) {
               {i > 0 && (
                 <span className="mx-4 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-white/60" />
               )}
-              <Link prefetch={false}
+              <Link
                 href={`/article/${article.slug}`}
                 className="text-sm transition-opacity hover:opacity-80"
               >
