@@ -31,7 +31,9 @@ export const metadata: Metadata = {
 
 // 30 min : le dashboard declenche deja une revalidation immediate a chaque
 // publication (/api/revalidate), inutile de regenerer toutes les minutes.
-export const revalidate = 1800;
+// 60 s : hebergement a prix fixe, la regeneration ne coute rien.
+// Un article publie apparait donc en moins d'une minute.
+export const revalidate = 60;
 
 // Categories mises en avant sur l'accueil, par ordre d'affichage.
 const HOME_CATEGORY_SLUGS = [

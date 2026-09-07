@@ -35,6 +35,34 @@ const nextConfig: NextConfig = {
       // Les anciens liens WordPress renvoient desormais une 404 propre.
     ];
   },
+  // Empeche les caches intermediaires (proxy Hostinger, CDN, navigateur) de
+  // conserver le HTML des pages editoriales.
+  //
+  // Contexte : le cache serveur d'Hostinger a fige la page d'accueil pendant
+  // 4 jours (elle affichait encore le 2 septembre le 6 septembre). Ce cache
+  // ignore la revalidation de Next.js : /api/revalidate regenere bien la page,
+  // mais le proxy continue de servir son ancienne copie. Mesure : "/" renvoyait
+  // le 2 septembre alors que "/?x=99871" renvoyait le 6 septembre, au meme
+  // instant et depuis le meme deploiement.
+  //
+  // "max-age=0, must-revalidate" autorise la mise en cache mais oblige a
+  // revalider aupres du serveur avant chaque utilisation : une page ne peut
+  // plus rester figee. Les assets (/_next/static, images) ne sont pas
+  // concernes et gardent leur cache long.
+  async headers() {
+    const noStaleCache = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=0, must-revalidate",
+      },
+    ];
+
+    return [
+      { source: "/", headers: noStaleCache },
+      { source: "/categorie/:path*", headers: noStaleCache },
+      { source: "/article/:path*", headers: noStaleCache },
+    ];
+  },
   allowedDevOrigins: ["10.5.0.2", "192.168.1.178"],
   images: {
     unoptimized: true,

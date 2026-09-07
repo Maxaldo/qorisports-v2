@@ -7,7 +7,7 @@ interface PageProps {
   params: Promise<{ category: string }>;
 }
 
-export const revalidate = 3600;
+export const revalidate = 120;
 
 // Seules les categories connues sont generees : une URL inconnue renvoie une
 // 404 immediate, sans creer de page en cache (evite les ecritures ISR

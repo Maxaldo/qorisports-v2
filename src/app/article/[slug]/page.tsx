@@ -26,7 +26,7 @@ interface PageProps {
 
 // 24 h : un article publie ne change quasiment plus. Les modifications sont
 // poussees immediatement par le dashboard via /api/revalidate.
-export const revalidate = 86400;
+export const revalidate = 300;
 
 // Tous les articles existants sont generes au build : les robots qui testent
 // des URLs au hasard ne declenchent plus la creation de pages en cache.
