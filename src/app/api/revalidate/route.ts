@@ -14,7 +14,7 @@ import type { NextRequest } from "next/server";
 // Anti-rafale : le dashboard sauvegarde automatiquement toutes les 30 s.
 // Sans garde-fou, chaque sauvegarde declencherait une regeneration (facturee).
 // On ignore les demandes repetees sur un meme chemin pendant 5 minutes.
-const THROTTLE_MS = 5 * 60 * 1000;
+const THROTTLE_MS = 20 * 1000;
 const lastRevalidated = new Map<string, number>();
 
 function shouldSkip(path: string): boolean {
