@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.github
+.vercel
+export
+scraper/debug-html
+*.sql
+*.md
+.env.local
+tsconfig.tsbuildinfo

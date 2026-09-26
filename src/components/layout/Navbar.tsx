@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Moon, Search, Sun } from "lucide-react";
+import { Download, Moon, Search, Sun } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,6 +9,12 @@ import { MobileMenu } from "@/components/layout/MobileMenu";
 import { navItems } from "@/components/layout/navigation";
 import { SearchModal } from "@/components/ui/SearchModal";
 import { useTheme } from "@/lib/useTheme";
+
+// Entrees affichees en pastille coloree plutot qu'en onglet de la barre.
+const PILL_HREFS = new Set([
+  "/apps/qorislive-1.0.0.apk",
+  "/coin-des-parieurs",
+]);
 
 export function Navbar() {
   const pathname = usePathname();
@@ -92,7 +98,7 @@ export function Navbar() {
                   isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"
                 }
                 onClick={() => setIsMenuOpen((v) => !v)}
-                className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-md transition-colors hover:bg-gray-100 lg:hidden dark:hover:bg-gray-800"
+                className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-md transition-colors hover:bg-gray-100 xl:hidden dark:hover:bg-gray-800"
               >
                 <span
                   className={`block h-[2px] w-[18px] rounded-full bg-gray-600 transition-all duration-300 dark:bg-gray-300 ${
@@ -115,11 +121,31 @@ export function Navbar() {
         </header>
 
         {/* Niveau 2 — Barre de navigation sombre (reste collee en haut) */}
-        <nav className="hidden bg-primary lg:block">
+        {/* Barre horizontale a partir de xl seulement : avec 9 entrees dont
+            "Telecharger QorisLive", elle deborderait en dessous de 1280px.
+            En dessous, c'est le menu lateral qui prend le relais. */}
+        <nav className="hidden bg-primary xl:block">
           <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4">
             {navItems.map((item, i) => {
               const active = isActive(item.href);
               const isBetting = item.href === "/coin-des-parieurs";
+
+              // Telechargement direct : balise <a download>, pas un <Link>.
+              // Pastille verte (vert du logo) pour se demarquer sans empieter
+              // sur le jaune du Coin des Parieurs.
+              if (item.download) {
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    download
+                    className="ml-1 flex h-7 items-center gap-1.5 rounded bg-[#58A22C] px-2.5 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-[#467F22]"
+                  >
+                    <Download className="h-3.5 w-3.5 shrink-0" />
+                    {item.label}
+                  </a>
+                );
+              }
 
               if (isBetting) {
                 return (
@@ -141,8 +167,10 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative flex h-full items-center px-4 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                    i < navItems.length - 2
+                  className={`relative flex h-full items-center px-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+                    // Pas de separateur juste avant une pastille (QorisLive,
+                    // Coin des Parieurs) ni sur le dernier element.
+                    i < navItems.length - 1 && !PILL_HREFS.has(navItems[i + 1].href)
                       ? "border-r border-white/20"
                       : ""
                   } ${

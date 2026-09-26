@@ -1,6 +1,7 @@
 import {
   CalendarDays,
   Coins,
+  Download,
   Footprints,
   Home,
   Shapes,
@@ -80,6 +81,8 @@ export function CategoryIcon({
   const key = label.toLowerCase();
   const Icon: IconComp = key.includes("parieur")
     ? Coins
-    : MAP[key] ?? Shapes;
+    : key.includes("télécharger")
+      ? Download
+      : MAP[key] ?? Shapes;
   return <Icon className={className} style={style} />;
 }

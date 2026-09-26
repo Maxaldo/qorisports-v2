@@ -19,7 +19,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <>
           {/* Overlay sombre anime separement */}
           <motion.div
-            className="fixed inset-0 z-40 bg-black/60 md:hidden"
+            className="fixed inset-0 z-40 bg-black/60 xl:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -29,7 +29,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           {/* Panel du menu qui glisse depuis la droite */}
           <motion.aside
-            className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm bg-primary text-white md:hidden"
+            className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm overflow-y-auto bg-primary text-white xl:hidden"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -57,18 +57,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </div>
 
               <nav className="mt-8 flex flex-col gap-6">
-                {navItems.map((item, i) => (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + i * 0.05, duration: 0.3 }}
-                  >
-                    <Link
-                      href={item.href}
-                      onClick={onClose}
-                      className="flex items-center gap-4 text-xl font-semibold"
-                    >
+                {navItems.map((item, i) => {
+                  const inner = (
+                    <>
                       <span
                         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
                         style={{
@@ -79,9 +70,52 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                         <CategoryIcon label={item.label} className="h-5 w-5" />
                       </span>
                       {item.label}
-                    </Link>
-                  </motion.div>
-                ))}
+                      {item.badge && (
+                        <span
+                          className="rounded-full px-2 py-[2px] text-[10px] font-bold uppercase tracking-wide"
+                          style={{
+                            backgroundColor: `${item.color ?? "#94A3B8"}33`,
+                            color: item.color ?? "#E2E8F0",
+                          }}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
+                  );
+
+                  const itemClass =
+                    "flex items-center gap-4 text-lg font-semibold leading-snug sm:text-xl";
+
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.05, duration: 0.3 }}
+                    >
+                      {item.download ? (
+                        // Telechargement direct : <a download>, pas un <Link>.
+                        <a
+                          href={item.href}
+                          download
+                          onClick={onClose}
+                          className={itemClass}
+                        >
+                          {inner}
+                        </a>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          onClick={onClose}
+                          className={itemClass}
+                        >
+                          {inner}
+                        </Link>
+                      )}
+                    </motion.div>
+                  );
+                })}
               </nav>
             </div>
           </motion.aside>

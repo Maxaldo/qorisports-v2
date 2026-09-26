@@ -49,3 +49,7 @@ export/
 # Prompts internes et fichiers de debug (rester en local)
 PROMPT-CURSOR-*.md
 scraper/debug-html/
+
+# APK QorisLive : 109 Mo, au-dela de la limite de 100 Mo de GitHub.
+# Le fichier est depose directement sur le serveur, pas via le depot.
+public/apps/*.apk
