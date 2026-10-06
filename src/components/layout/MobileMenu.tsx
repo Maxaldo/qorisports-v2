@@ -19,7 +19,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <>
           {/* Overlay sombre anime separement */}
           <motion.div
-            className="fixed inset-0 z-40 bg-black/60 xl:hidden"
+            className="fixed inset-0 z-40 bg-black/60 lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -29,7 +29,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
 
           {/* Panel du menu qui glisse depuis la droite */}
           <motion.aside
-            className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm overflow-y-auto bg-primary text-white xl:hidden"
+            className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm overflow-y-auto bg-primary text-white lg:hidden"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}

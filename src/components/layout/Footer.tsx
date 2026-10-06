@@ -89,11 +89,19 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold">Contact</h4>
             <a
-              href="mailto:contact@qorisports.com"
+              href="mailto:support@qorisports.com"
               className="mt-3 inline-block text-sm text-white/85 transition-opacity hover:opacity-80"
             >
-              contact@qorisports.com
+              support@qorisports.com
             </a>
+            {/* Exigence Google Play pour l'application QorisLive : le lien de
+                suppression de compte doit etre accessible publiquement. */}
+            <Link
+              href="/suppression-compte"
+              className="mt-2 block text-sm text-white/70 transition-opacity hover:opacity-80"
+            >
+              Supprimer mon compte
+            </Link>
           </div>
         </div>
 

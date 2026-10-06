@@ -18,16 +18,15 @@ export const navItems: NavItem[] = [
   { label: "Athletisme", href: "/categorie/athletisme", color: "#DC2626" },
   { label: "Autres", href: "/categorie/autres", color: "#7C3AED" },
   { label: "Matchs", href: "/matchs", color: "#16A34A" },
-  // Telechargement direct de l'APK. Chemin relatif volontairement : il reste
-  // sur la meme origine que le site, condition pour que l'attribut "download"
-  // soit pris en compte par le navigateur.
-  // Vert exact du logo QoriSports (echantillonne dans public/QORISLIVE.png) ;
-  // le jaune reste reserve au Coin des Parieurs.
-  {
-    label: "Télécharger QorisLive",
-    href: "/apps/qorislive-1.0.0.apk",
-    color: "#58A22C",
-    download: true,
-  },
   { label: "Coin des Parieurs", href: "/coin-des-parieurs", color: "#CA8A04" },
+  // Pour remettre le telechargement de l'APK, reinserer ici :
+  // {
+  //   label: "Télécharger QorisLive",
+  //   href: "<url de l'APK>",
+  //   color: "#58A22C",   // vert du logo ; le jaune reste au Coin des Parieurs
+  //   download: true,
+  // },
+  // Le rendu <a download> est deja en place dans Navbar et MobileMenu.
+  // Attention : au-dela de 8 entrees, la barre horizontale deborde sous
+  // 1280px — il faudra repasser ses points de rupture de "lg" a "xl".
 ];

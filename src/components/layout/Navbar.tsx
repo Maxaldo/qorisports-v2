@@ -98,7 +98,7 @@ export function Navbar() {
                   isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"
                 }
                 onClick={() => setIsMenuOpen((v) => !v)}
-                className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-md transition-colors hover:bg-gray-100 xl:hidden dark:hover:bg-gray-800"
+                className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-md transition-colors hover:bg-gray-100 lg:hidden dark:hover:bg-gray-800"
               >
                 <span
                   className={`block h-[2px] w-[18px] rounded-full bg-gray-600 transition-all duration-300 dark:bg-gray-300 ${
@@ -121,10 +121,10 @@ export function Navbar() {
         </header>
 
         {/* Niveau 2 — Barre de navigation sombre (reste collee en haut) */}
-        {/* Barre horizontale a partir de xl seulement : avec 9 entrees dont
-            "Telecharger QorisLive", elle deborderait en dessous de 1280px.
-            En dessous, c'est le menu lateral qui prend le relais. */}
-        <nav className="hidden bg-primary xl:block">
+        {/* 8 entrees : la barre tient a partir de lg. Si on en ajoute une
+            avec un libelle long, elle debordera — passer alors a "xl", ici
+            comme sur le bouton hamburger et le MobileMenu. */}
+        <nav className="hidden bg-primary lg:block">
           <div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4">
             {navItems.map((item, i) => {
               const active = isActive(item.href);
@@ -167,7 +167,7 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative flex h-full items-center px-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+                  className={`relative flex h-full items-center px-4 text-xs font-semibold uppercase tracking-wider transition-colors ${
                     // Pas de separateur juste avant une pastille (QorisLive,
                     // Coin des Parieurs) ni sur le dernier element.
                     i < navItems.length - 1 && !PILL_HREFS.has(navItems[i + 1].href)
